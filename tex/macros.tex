@@ -12,6 +12,7 @@
 \usepackage{tikz}
 \usepackage{tcolorbox}
 \usepackage{ulem}
+\graphicspath{{../figures/}}
 %%figures
 \def\lfig#1#2{\includegraphics[width=#1 in]{#2}}
 \def\tfig#1#2{\includegraphics[height=#1 in]{#2}}
@@ -47,6 +48,7 @@
 \def\skyblue{\color[rgb]{0.2,0.7,1.}}
 %%control
 \def\ulim#1{\underset{#1}{\lim}}
+\def\diag{\mathrm{diag}\,}
 \def\heaviside{\,\mathrm{h}\,}
 \def\bral{\left(\begin{array}{l}}
 \def\brar{\end{array}\right)}
@@ -81,6 +83,9 @@
 \def\bmini#1{\begin{minipage}{#1\textwidth}}
 \def\emini{\end{minipage}}
 \def\tbox#1{\begin{tcolorbox}#1\end{tcolorbox}}
+\def\warn#1{{\scriptsize {\color{red} Warning:} #1}}
+\def\bcode#1{\darkgreen \small \#...............{\scriptsize source code: #1} \dotfill}
+\def\ecode{\#\dotfill \color{black} \normalsize}
 \def\pfrac#1#2#3{\left(\frac{\partial #1}{\partial #2}\right)_{#3}}
 \def\res#1#2{\,\mathrm{res}\,#1\left(#2\right)\,}
 \def\newt#1#2{\left(\begin{array}{c}#1\\ #2\end{array}\right)}
@@ -93,6 +98,8 @@
 \def\bropt{\,(\ \ \ )}
 \def\sech{\mathrm{sech}\,}
 \def\csch{\mathrm{csch}\,}
+\def\asinh{\mathrm{asinh}\,}
+\def\acosh{\mathrm{acosh}\,}
 \def\sone{$\star$}
 \def\stwo{$\star\star$}
 \def\sthree{$\star\star\star$}
@@ -222,3 +229,5 @@
 \def\thinkc#1{\begin{frame}\frametitle{思考题}\bcenter\lfig{0.5}{think2.jpg}  \skipline #1 \ecenter\end{frame}}
 \def\thinkd#1{\begin{frame}\frametitle{思考题}\bcenter\lfig{0.5}{think3.jpg}  \skipline #1 \ecenter\end{frame}}
 \def\thinke#1{\begin{frame}\frametitle{思考题}\bcenter\lfig{0.5}{think4.jpg}  \skipline #1 \ecenter\end{frame}}
+\def\thinkf#1{\begin{frame}\frametitle{思考题}\bcenter\lfig{0.5}{think5.jpg}  \skipline #1 \ecenter\end{frame}}
+\def\schw{ds^2 = \left(1-\frac{2GM}{r}\right)dt^2 - \left(1-\frac{2GM}{r}\right)^{-1} dr^2 - r^2\left(d\theta^2 + \sin^2\theta d\phi^2\right)}

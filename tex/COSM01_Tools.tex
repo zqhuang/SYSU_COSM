@@ -1,0 +1,500 @@
+\documentclass[CJK,13pt]{beamer}
+\input{macros.tex}
+\input{titlepage.tex}
+  \date{}
+  \begin{document}
+  \bch
+\tpage{1}{Tools}
+
+
+\section{Python}
+
+\secpage{Python工具}{\addfig{1.5}{witch_and_coder.jpg}}
+
+\begin{frame}[fragile]
+  \frametitle{Sympy}
+  在本课程中，我们将借助python的符号演算库sympy来进行运算。
+
+\bcode{source code}  
+\begin{verbatim}
+import sympy as sym
+\end{verbatim}
+\ecode
+
+\skipline
+
+\warn{一般不提倡为了省事而 from sympy import * ，这样可能会产生大量的重名冲突问题；你当然也知道用 numpy 时，尽量要采用 import numpy as np 而不是 from numpy import *，都是同一个道理。}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Sympy Example: 求极限}
+  \bcode{lim.py}
+\begin{verbatim}
+import sympy as sym
+x = sym.symbols('x')
+print(sym.limit((sym.log(1+x)-x)/x**2, x, 0))
+print(sym.limit((1+x)**(1/x), x, 0))
+\end{verbatim}
+\ecode
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Sympy Example：求导}
+  \bcode{deriv.py}
+\begin{verbatim}
+import sympy as sym
+x, y = sym.symbols('x, y')
+print(sym.diff(sym.sin(x), x))
+f = x * sym.exp(y)
+print(sym.diff(f, x))
+print(sym.diff(f, y))
+\end{verbatim}
+\ecode
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Sympy Example: 不定积分运算}
+  \bcode{indefint.py}
+\begin{verbatim}
+import sympy as sym
+x, n = sym.symbols('x, n')
+print(sym.integrate(sym.log(x),x))
+print(sym.integrate(x**n, x))
+\end{verbatim}
+\ecode
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Sympy Example: 定积分运算}
+  \bcode{defint.py}
+\begin{verbatim}
+import sympy as sym
+x, a = sym.symbols('x, a')
+print(sym.integrate(x**2, (x, -1, 1)))
+print(sym.integrate(sym.exp(-a*x**2),(x,-sym.oo, sym.oo)))
+\end{verbatim}
+\ecode
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Sympy Example: 级数展开}
+  \bcode{expan.py}
+\begin{verbatim} 
+import sympy as sym
+x, a = sym.symbols('x, a')
+f = sym.sqrt(a**2+x**2)
+print(sym.series(f, x, 0, 4))
+print(sym.series(sym.sinh(x)*sym.sin(x),x, 0, 12))
+\end{verbatim}
+\ecode
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Sympy Example: 化简}
+  \bcode{simp.py}
+\begin{verbatim}
+import sympy as sym
+x = sym.symbols('x')
+expr = sym.cos(3*x)-4*sym.cos(x)**3
+print(sym.simplify(expr))
+expr = (x**3+x**2-x-1)/(x**2+2*x+1)
+print(sym.simplify(expr))
+f, g = sym.symbols('f, g', cls=sym.Function)
+expr = f(g(x))
+print(sym.simplify(sym.diff(expr, x)/sym.diff(g(x), x))) 
+\end{verbatim}
+\ecode
+\end{frame}
+
+\begin{frame}
+  \frametitle{好了代码就讲到这里}
+  \addfig{1.5}{coder.jpg}
+\end{frame}
+
+\section{Natural Units}
+
+\secpage{自然单位制和量纲}{$c=\hbar=1$}
+
+\begin{frame}
+\frametitle{ 自然单位制和量纲 }
+ 自然单位制  $c = \hbar  = 1$
+
+
+长度量纲 = 时间量纲 = 质量量纲$^{-1}$ = 能量量纲$^{-1}$ 
+
+
+{\vskip 0.2in}
+\begin{minipage}{0.3\textwidth}
+\includegraphics[width=1in]{jugelizi.png}
+\end{minipage}
+\begin{minipage}{0.6\textwidth}
+
+力的量纲 \\
+= 质量量纲 $\times$ 长度量纲/时间量纲$^2$ \\
+= 质量量纲$^2$
+
+\end{minipage}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{ 思考题}
+
+\addfig{0.5}{think.jpg}
+
+下面物理量的量纲是质量的多少次方？
+
+速度$v$
+
+角速度$\omega$
+
+角动量$L$
+
+加速度$a$
+
+能量密度$\rho$
+
+压强$p$
+
+牛顿引力常数$G$
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{ 思考题 }
+
+$1\SIkg$的倒数是多少$\SIcm$?
+
+\bcenter
+\lfig{1}{blackq.jpg}
+
+根本不知道你在说什么.jpg
+\ecenter
+
+\end{frame}
+
+
+\section{Metric and Tensor}
+
+\secpage{度规和张量}{$$ ds^2 =  g_{\mu\nu} dx^\mu dx^\nu $$}
+
+
+
+\begin{frame}
+  \frametitle{球面坐标的“度规”}
+  我们都有在一个曲面上建立坐标系的经验，例如一个半径为 $R$ 的球面上的点可以用球坐标系的分坐标 $(\theta,\phi)$ 来表述。球面上很接近的两点之间的距离平方可以用
+  $$ ds^2 = R^2d\theta^2 + R^2\sin^2\theta d\phi^2, $$
+  来表示。
+
+  我们把它写成矩阵形式
+  $$ ds^2 =  \begin{pmatrix}
+    d\theta & d\phi 
+  \end{pmatrix}
+  \begin{pmatrix}
+    R^2 & 0 \\
+    0 & R^2\sin^2\theta
+  \end{pmatrix}
+ \begin{pmatrix}
+   d\theta \\
+   d\phi 
+  \end{pmatrix}  
+ $$
+ 这个矩阵
+ $\begin{pmatrix}  R^2 & 0 \\    0 & R^2\sin^2\theta  \end{pmatrix}$
+ 称为{\blue 度规(metric)} 。二次型的表述中显然可以约定它是对称矩阵，但{\blue 一般情况下它不一定是对角的}。
+\end{frame}
+
+\begin{frame}
+  \frametitle{球坐标的度规}
+  你可能已经意识到了，球坐标系下的“线元平方”
+  $$ ds^2 = dr^2 + r^2d\theta^2 + r^2\sin^2\theta d\phi^2$$
+  里也包含一个看起来不太平凡的度规
+  $$
+  \begin{pmatrix}
+    1 & 0   & 0 \\
+    0 & R^2 & 0 \\
+    0 & 0   & R^2\sin^2\theta
+  \end{pmatrix}
+  $$
+  但是，这个情况和球面上的情况存在本质差别——
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{球坐标系进行坐标变换}
+  做坐标变换 $r=\sqrt{x^2+y^2+z^2}$, $\theta=\arccos\frac{z}{r}$, $\phi=\arccos\frac{x}{\sqrt{x^2+y^2}}$, 在新坐标系下的度规：
+  
+  \bcode{coortrans.py}
+\begin{verbatim}
+import sympy as sym
+x,y,z = sym.symbols('x,y,z') 
+r = sym.sqrt(x**2+y**2+z**2)
+theta = sym.acos(z/r)
+phi = sym.acos(x/sym.sqrt(x**2+y**2))
+coor = sym.Matrix([r, theta, phi])
+xyz = sym.Matrix([x, y, z])
+metric = sym.diag(1, r**2, r**2*sym.sin(theta)**2)
+jac = coor.jacobian(xyz) 
+print(sym.simplify(jac.T*metric*jac))
+\end{verbatim}        
+\ecode
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{球坐标系进行坐标变换}
+  输出的度规矩阵是个单位矩阵，也就是
+  $$ds^2=dx^2+dy^2+dz^2.$$
+  这显然是因为我们通过坐标变换，从球坐标系转换到了直角坐标系。
+
+  \skipline
+  
+  前面二维球面的例子却不一样——你知道球面是弯曲的，在上面无论如何也无法建立直角坐标系。
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{弯曲的时空}
+  我们都知道平直的四维时空的时空距离元平方：
+  $$ ds^2 = dt^2 - dx^2-dy^2-dz^2 .$$
+  注意我们用了自然单位制 $c=\hbar=1$。这个度规，也就是 $\mathbf{diag}(1,-1,-1,-1)$ ，称为 {\blue Minkowski 度规}。
+  
+
+  \skiplines
+  
+  在弯曲的时空中，无论你采取何种坐标系，都无法使度规是 Minkowski 度规。这时就要用到{\blue 广义相对论}。
+\end{frame}
+
+
+\begin{frame}
+\frametitle{ 时空坐标的标记}
+一般性地，四维时空可以用坐标$(x^0, x^1, x^2, x^3)$来标记。而 $x^\mu$ 则代表任意的坐标分量（即希腊字母 $\mu$ 可以取 $0,1,2,3$ 中的任意一个）。
+
+
+度规则用对称矩阵 $g_{\mu\nu}$ 来表示，这样距离元平方
+$$ds^2=\begin{pmatrix}dx^0 & dx^1 & dx^2 & dx^3 \end{pmatrix}
+\begin{pmatrix}
+  g_{00} & g_{01} & g_{02} & g_{03} \\
+  g_{10} & g_{11} & g_{12} & g_{13} \\
+  g_{20} & g_{21} & g_{22} & g_{23} \\
+  g_{30} & g_{31} & g_{32} & g_{33}
+\end{pmatrix}
+\begin{pmatrix}
+  dx^0 \\
+  dx^1 \\
+  dx^2 \\
+  dx^3
+\end{pmatrix} $$
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{爱因斯坦求和规则}
+  上面的矩阵乘法也可以写成求和的形式：
+$$ds^2 = \sum_{\mu=0}^3\sum_{\nu=0}^3 g_{\mu\nu} dx^\mu dx^\nu$$
+今后我们要采用爱因斯坦求和规则，就是把{\blue 重复出现的、一上一下的每对指标默认求和}。那么上式就可以写成广义相对论中标准的形式
+\tbox{$$ ds^2 =  g_{\mu\nu} dx^\mu dx^\nu .$$}
+\end{frame}
+
+\begin{frame}
+  \frametitle{协变和逆变}
+  坐标 $x^\mu$ 的指标写在上面， 这种指标称为{\blue 逆变(contravariant)指标}。
+  度规 $g_{\mu\nu}$ 的指标写在下面，这种指标称为{\blue 协变(covariant)指标}。
+
+
+  \skiplines
+  
+  为了在协变和逆变之间自如转换，我们先定义{\blue 度规矩阵 $g_{\mu\nu}$ 的逆矩阵为逆变度规 $g^{\mu\nu}$}。
+
+\end{frame}
+
+\begin{frame}
+\frametitle{ 一般性张量(tensor)的定义 }
+
+在坐标变换$x \rightarrow \tilde{x}$下，如果一个带指标的量 $\tilde{T}^{\mu\nu\ldots}_{\ \ \alpha\beta\ldots}$ 的分量满足下述变化规律：
+
+
+$$\tilde{T}^{\mu\nu\ldots}_{\ \ \alpha\beta\ldots} = \left(\frac{\partial \tilde{x}^\mu}{\partial x^\rho}\frac{\partial \tilde{x}^\nu}{\partial x^\sigma} \frac{\partial x^\gamma }{\partial \tilde{x}^\alpha}\frac{\partial x^\lambda}{\partial \tilde{x}^\beta} \ldots \right)T^{\rho\sigma\ldots}_{\ \ \gamma\lambda\ldots} $$
+
+这个量$\tilde{T}^{\mu\nu\ldots}_{\ \ \alpha\beta\ldots}$ 就称为张量。指标的个数称为张量的阶数。零阶张量（在坐标变换下不变）也称为标量。一阶张量也称为矢量。
+
+\skipline
+
+(看到这里差不多就该考虑退课了\bye)
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{ 张量指标的升降}
+
+张量的坐标可以通过度规$g_{\mu\nu}$和其逆矩阵$g^{\mu\nu}$来升降
+
+{\vskip 0.1in}
+
+\begin{minipage}{0.3\textwidth}
+\includegraphics[width=1in]{jugelizi.png}
+\end{minipage}
+\begin{minipage}{0.6\textwidth}
+$$F_{\mu\nu} = g_{\mu\rho}g_{\nu\sigma}F^{\rho\sigma}$$
+$$T^{\mu}_{\ \nu\rho} = g^{\mu\sigma} T_{\sigma\nu\rho}$$
+$$g^{\mu}_{\ \nu} = g^{\mu\rho}g_{\rho\nu} = \delta^{\mu}_{\ \nu}$$
+\end{minipage}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{ 张量指标的相乘}
+
+一个m阶张量和一个n阶张量可以直接相乘生成m+n阶张量。
+
+{\vskip 0.1in}
+
+\begin{minipage}{0.3\textwidth}
+\includegraphics[width=1in]{jugelizi.png}
+\end{minipage}
+\begin{minipage}{0.6\textwidth}
+
+$dx^\mu dx^\nu$是二阶张量。
+
+$g_{\mu\nu}g^{\rho\sigma}$ 是四阶张量
+
+\end{minipage}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{ 张量指标的收缩}
+
+张量的上下指标可以收缩，产生低两阶的张量。
+
+{\vskip 0.1in}
+
+\begin{minipage}{0.3\textwidth}
+\includegraphics[width=1in]{jugelizi.png}
+\end{minipage}
+\begin{minipage}{0.6\textwidth}
+$$dx^\mu dx_\mu = ds^2$$
+$$g^{\mu}_{\ \mu} = 4$$
+$$g^{\mu\rho}g_{\rho\nu} = \delta^{\mu}_{\ \nu}$$
+\end{minipage}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{思考题}
+
+\addfig{1}{think2.jpg}
+如果$\phi$是标量，那么$\phi_{,\mu} \equiv \frac{\partial \phi}{\partial x^\mu}$是张量吗？ $\phi_{,\mu,\nu}\equiv \frac{\partial^2 \phi}{\partial x^\mu\partial x^\nu}$ 呢？
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{协变微商(covariant derivative)}
+  带指标的张量求普通微商(逗号后面跟指标)后一般不是张量。在弯曲的空间里有一种新的微商叫做{\blue 协变微商}（分号后面跟指标）可以保证张量求协变微商后还是张量。例如，逆变形式矢量的协变微商是：
+  $$A^\alpha_{\ ;\nu} = A^\alpha_{\ ,\nu}+\Gamma^\alpha_{\ \mu\nu}A^\mu $$
+  这里的
+  {\blue  $$\Gamma^\alpha_{\ \mu\nu}=\frac{1}{2}g^{\alpha\lambda}\left(g_{\lambda\mu,\nu}+g_{\lambda\nu,\mu}-g_{\mu\nu,\lambda}\right),$$}
+  \bmini{0.6}
+  它有个你记不住的名字，叫{\blue Christoffel-Levi-Civita联络，简称 Christoffel 联络}。
+  \emini
+  \bmini{0.35}
+  \addfig{0.9}{levicivita.png}
+  \emini
+  
+  
+\end{frame}
+
+\begin{frame}
+  一般高阶张量的协变微商计算规则如下：
+  {\blue
+  \bea
+  \left(T^{\mu_1\mu_2\ldots}_{\ \ \ \ \nu_1\nu_2\ldots}\right)_{;\lambda} &=& \left(T^{\mu_1\mu_2\ldots}_{\ \ \ \ \nu_1\nu_2\ldots}\right)_{,\lambda} \newl
+  && + \Gamma^{\mu_1}_{\ \rho\lambda} T^{\rho\mu_2\ldots}_{\ \ \ \ \nu_1\nu_2\ldots} + \Gamma^{\mu_2}_{\ \rho\lambda} T^{\mu_1\rho\ldots}_{\ \ \ \ \nu_1\nu_2\ldots} + \ldots \newl
+  && - \Gamma^\rho_{\nu_1\lambda}T^{\mu_1\mu_2\ldots}_{\ \ \ \ \rho\nu_2\ldots} - \Gamma^\rho_{\nu_2\lambda}T^{\mu_1\mu_2\ldots}_{\ \ \ \ \nu_1\rho\ldots}-\ldots
+  \eea
+  }
+
+  协变微商大多数性质和普通微商一样，例如对任意张量 $A,B$ 有 $$(AB)_{;\mu} = A_{;\mu}B+AB_{;\mu}.$$
+  \warn{但是要注意高阶协变微商的次序不可随意交换。}
+\end{frame}
+
+
+\section{General Relativity}
+
+\secpage{广义相对论}{$$G_{\mu\nu}=8\pi G T_{\mu\nu}$$}
+
+\begin{frame}
+  \frametitle{广义相对论的两个方程}
+  John Archibald Wheeler的著名金句：
+  \tbox{Matter tells spacetime how to curve, and spacetime tells matter how to move.}
+  
+  从实际应用的角度讲，你只需要了解广义相对论给出了两个方程：{\blue 引力场方程描述了时空如何受物质的影响而弯曲；测地线方程描述了粒子在弯曲的时空中如何运动。}  
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{测地线方程}
+  \tbox{  $$\frac{d p^\alpha}{dt} + \Gamma^{\alpha}_{\mu\nu}\frac{p^\mu p^\nu}{p^0} = 0$$}
+  这里的 $t=x^0$， $p^\alpha$ 是粒子的四维动量。对质量$m\ne 0$的粒子， $p^\alpha = m\frac{dx^\alpha}{ds}$。
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{引力场方程}
+  \tbox{$$G^{\mu\nu} = 8\pi G T^{\mu\nu}$$}
+  或者等价地
+  \tbox{$$R^{\mu\nu} = 8\pi G \left(T^{\mu\nu}-\frac{1}{2}Tg^{\mu\nu}\right)$$}  
+  这里的 $G_{\mu\nu}$ 叫做Einstein张量，$R_{\mu\nu}$ 叫做 Ricci 张量；它们都可以用度规和度规的一阶、二阶偏导数计算出来。具体的计算公式见附录A。
+
+  $T^{\mu\nu}$ 是物质的能量动量张量，$T\equiv T^\mu_{\ \mu}$ 是它的迹。在附录B中给出了理想流体的 $T^{\mu\nu}$
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Homework}
+  \bitem
+\item[1]{自然单位制下力矩的量纲是什么（=质量的多少次方）？}
+\item[2]{某散射过程的截面为$\sigma = 10^{-3}/m_W^2$, 其中$m_W \approx 80 \mathrm{GeV}$是$W^{\pm}$的粒子质量。试换算出以$\mathrm{cm}^2$为单位的截面值。}
+\item[3]{设四维时空度规为$g_{\mu\nu}$，试化简$g_{\mu\nu}g^{\mu\nu}$。}
+  \eitem
+  
+\end{frame}
+
+\section{Appendix: A}
+
+\begin{frame}
+  \frametitle{附录A：Riemann张量，Ricci张量和Einstein张量}
+  Riemann张量定义为
+  $$R^\lambda_{\ \mu\alpha\beta} = \Gamma^\lambda_{\ \mu\alpha,\beta} + \Gamma^\rho_{\ \mu\alpha}\Gamma^\lambda_{\ \rho\beta} -[\alpha \leftrightarrow\beta]$$
+  这里的 $[\alpha \leftrightarrow\beta]$ 表示把前面两项的 $\alpha,\beta$ 互换。
+
+  Ricci张量可以由Riemann张量导出
+  $$  R_{\mu\nu} = R^\rho_{\ \mu\nu\rho}$$
+  Einstein 张量可以由Ricci张量导出
+  $$ G^{\mu\nu} = R^{\mu\nu}-\frac{1}{2}R g^{\mu\nu}$$
+  这里的Ricci标量$R$是Ricci张量的收缩 $R\equiv R^\mu_{\ \mu}$。
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{附录B：理想流体的能量动量张量}
+  理想流体的能量动量张量为
+  $$ T^{\mu\nu} = (\rho+p)u^\mu u^\nu - p g^{\mu\nu}$$
+  上面各个符号是这样定义的：理想流体的每一个四维时空点 $x$ 都有一个“宏观速度” $u^\mu$，和流体宏观速度共动的观测者看到附近的流体是各向同性的，该观测者可以测得一个能量密度 $\rho$ 和压强 $p$。
+\end{frame}
+
+
+\ech
+\end{document}
