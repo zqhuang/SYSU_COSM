@@ -4,6 +4,7 @@
 \useoutertheme[footline=authortitle]{miniframes}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{fancyvrb}
 \usepackage{graphicx}
 \usepackage{eufrak}
 \usepackage{color}
@@ -85,6 +86,7 @@
 \def\tbox#1{\begin{tcolorbox}#1\end{tcolorbox}}
 \def\warn#1{{\scriptsize {\color{red} Warning:} #1}}
 \def\bcode#1{\darkgreen \small \#...............{\scriptsize source code: #1} \dotfill}
+\def\btinycode#1{\darkgreen \tiny \#...............source code: #1 \dotfill}
 \def\ecode{\#\dotfill \color{black} \normalsize}
 \def\pfrac#1#2#3{\left(\frac{\partial #1}{\partial #2}\right)_{#3}}
 \def\res#1#2{\,\mathrm{res}\,#1\left(#2\right)\,}
@@ -191,6 +193,9 @@
 \def\cdeg{^\circ \mathrm{C}}
 \def\atm{\,\mathrm{atm}}
 \def\angstrom{\,\text{\AA}}
+\def\SIMpc{\,\mathrm{Mpc}}
+\def\SIkpc{\,\mathrm{kpc}}
+\def\SIpc{\,\mathrm{pc}}
 \def\SIL{\,\mathrm{L}}
 \def\SIkm{\,\mathrm{km}}
 \def\SIyr{\,\mathrm{yr}}
