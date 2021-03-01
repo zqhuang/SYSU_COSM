@@ -342,9 +342,9 @@ plt.show()
   \frametitle{Planck量}
   通过把 $c, \hbar, G, k_B$ 适当组合，我们能得到所有五种量纲的量（另外两个国际单位摩尔和弧度是无量纲的）。这些量就称为Planck量。
 
-  普朗克时间 $t_P=\sqrt{\frac{G\hbar}{c}} = 5.391\times 10^{-44}\SIs$
+  普朗克时间 $t_P=\sqrt{\frac{G\hbar}{c^5}} = 5.391\times 10^{-44}\SIs$
 
-  普朗克长度 $t_P=\sqrt{\frac{G\hbar}{c^33}} = 1.616\times 10^{-35}\SIm$  
+  普朗克长度 $t_P=\sqrt{\frac{G\hbar}{c^3}} = 1.616\times 10^{-35}\SIm$  
 
   普朗克质量 $m_P = \sqrt{\frac{\hbar c}{G}} = 2.176\times 10^{-8}\SIkg$
 
@@ -416,6 +416,39 @@ plt.show()
     
   \url{http://zhiqihuang.top/cosm/codes/units.py}
 \end{frame}
+
+\section{Statiscal Significance}
+
+\secpage{统计置信度}{已知你本课通过的置信度为 $2.2222\sigma$，请问是否要退课？}
+
+\begin{frame}
+  \frametitle{思考题}
+  \addfig{0.5}{think1.jpg}
+  
+  已知“你可以通过本课”这个结论的置信度(confidence level)为 $2.2222\sigma$，请问你挂科概率是多大？
+\end{frame}
+
+\begin{frame}
+  \frametitle{思考题}
+  你自己测量你的 (身高，体重）= (180, 180), 测量误差关联矩阵(covariance matrix)为：
+  \be
+  \begin{pmatrix}
+    100 & 10 \\
+    10 & 100 
+  \end{pmatrix}
+  \ee
+
+  医院测量到你的 (身高，体重）= (140, 240), 测量误差关联矩阵(covariance matrix)为：
+  \be
+  \begin{pmatrix}
+    2 & 0 \\
+    0 & 2 
+  \end{pmatrix}
+  \ee
+
+  请问两次测量之间有几个 $\sigma$ 的不一致性(tension)?
+\end{frame}
+
 
 \ech
 \end{document}

@@ -1,0 +1,383 @@
+\documentclass[CJK,13pt]{beamer}
+\input{macros.tex}
+\input{titlepage.tex}
+  \date{}
+  \begin{document}
+  \bch
+  \tpage{6}{Extended Cosmological Models}
+
+  \section{wCDM}
+  \secpage{$w$CDM模型}{$$\rho_{\rm DE} \propto a^{-3(1+w)}$$}
+
+  \begin{frame}
+    \frametitle{宇宙学常数面临的疑难}
+    宇宙学常数(真空能) $\Lambda$ 作为暗能量的标准解释，看起来既高大上又对得上绝大多数观测数据，美滋滋。但其实，它至少面临着两个理论难题：
+    \bitem
+  \item{{\blue fine tuning problem:} 按照量子场论预言的真空能至少也得是 $\mathrm{TeV}^4$ 的量级，和实际观测到的 $\mathrm{meV}^4$ 差了那么亿点点。}
+  \item{{\blue coincidence problem:} 按照 $\Lambda$CDM 模型，在宇宙演化历史中 $\rho_m$ 至少变化了几十个数量级，而 $\rho_\Lambda$ 不变。那为什么目前 $\rho_m$ 和 $\rho_\Lambda$ 是同一数量级的呢？}
+    \eitem
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{$w$CDM}
+    既然 $\Lambda$CDM 未必稳，那么就搞亿点点事情？
+
+    \addfig{1.7}{gaoshiqing.jpg}
+
+    最不废脑子的办法就是假设暗能量一个状态方程（压强和密度之比）为常数 $w$ 的，和其他成分仅有引力相互作用的未知流体。这个模型称为{\blue $w$CDM模型}。
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{$w$CDM 的基本计算}
+    请先用能量守恒证明 $w$CDM 模型里的暗能量密度：
+    $$\rho_{\rm DE} \propto a^{-3(1+w)}$$
+    然后证明
+   {\small $$H(z)=H_0\sqrt{\Omega_r(1+z)^4+\Omega_m(1+z)^3 + \Omega_k(1+z)^2+\Omega_{\rm DE}(1+z)^{3(1+w)}}$$}
+
+    \skiplines
+    
+    （各种距离，共动体积等的表达式，只要替换掉 $H(z)$，其余全都不用变。）
+  \end{frame}
+
+  \section{CPL model}
+  \secpage{$w_0$-$w_a$ 模型}{$$\rho_{\rm DE} \propto e^{-3\left[(1+w_0+w_a)\ln a + w_a(1-a)\right]}$$}
+  
+  \begin{frame}
+    \frametitle{$w_0$-$w_a$ 模型}
+    \lfig{0.2}{why.jpg}等等，刚才你为什么假设暗能量的状态方程是一个常数？
+    
+    \lfig{0.2}{baozou_haha.png} 为了省脑子……
+
+    \skiplines
+    
+    除了常数之外，最不废脑子（这是重点）的就是线性函数。在 $w_0$-$w_a$模型（有时也按三位提出者Chevallier-Polarski-Linder命名为CPL模型) 里，假设暗能量的状态方程为
+    $$w_0+w_a(1-a)$$
+      这里的 $w_0, w_a$ 为常数， $a$ 是尺度因子。
+
+      \skipline
+      
+      （显然，$w$CDM 模型也可以看成 CPL模型里 $w_a=0$ 的特殊情形。）
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{$w_0$-$w_a$ 模型的基本计算}
+    请先用能量守恒证明 $w_0$-$w_a$ 模型里的暗能量密度：
+    $$\rho_{\rm DE} \propto e^{-3\left[(1+w_0+w_a)\ln a + w_a(1-a)\right]}$$
+    然后证明
+   {\scriptsize $$H(z)=H_0\sqrt{\Omega_r(1+z)^4+\Omega_m(1+z)^3 + \Omega_k(1+z)^2+\Omega_{\rm DE}e^{3\left[(1+w_0+w_a)\ln (1+z) - w_a\frac{z}{1+z}\right]}}$$}
+
+    \skiplines
+    
+    （各种距离，共动体积等的表达式，只要替换掉 $H(z)$，其余全都不用变。）
+  \end{frame}
+
+  \section{Cosmic Neutrino Background}
+
+  \secpage{Cosmic Neutrino Background}{刚才省下的亿点点脑细胞都得废在这里了！}
+
+  \begin{frame}
+    \frametitle{中微子、正负电子和光子的一段往事}
+    大爆炸之后的宇宙，宇宙怡然自得地，一边自我膨胀，一边给自己降温……
+    \bitem
+  \item[1]{{\blue 快乐大家庭:} \scriptsize 一开始，正负电子、光子、中微子等互相散射，处于热平衡（因此有共同的温度）。}
+  \item[2]{{\blue 中微子不跟大家玩了:} \scriptsize 当温度降到大约 $\lesssim 1\mathrm{MeV}$ 时，正反中微子之间，以及中微子和正负电子之间基本不再有散射（中微子脱耦）。不过，中微子的温度仍然和光子-正负电子气体的温度保持一致（因两者都按照 $T\propto a^{-1}$ 演化）。}
+  \item[3]{{\blue 正负电子挂了：} \scriptsize 不久之后，当温度降到电子的静止质量 ($\approx 0.5\mathrm{MeV}$)之下时，从光子产生正负电子也变得非常困难。绝大部分正电子和电子都湮没为光子，消失在历史的长河中……在这一步，正负电子把它们的\sout{功力}熵传递给了光子，导致光子温度骤然上升，超过了中微子的温度。}
+  \item[4]{{\blue 一切又归于平静：} \scriptsize 在绝大部分正负电子湮灭之后，光子和中微子的温度比例就一直保持不变了，都是按 $T\propto a^{-1}$ 的规律变化。}    
+    \eitem
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{中微子、正负电子和光子的一段往事}
+
+     这个故事的一些细节的说明
+    \bitem
+    \item[1]{脱耦的有三代中微子和反中微子；因为中微子不直接参与电磁相互作用，不存在“正反中微子湮灭为光子”的情况。(极高能的正反中微子能湮灭为正负电子，但在 $\sim\SIMeV$ 温度时这个太难）}
+    \item[2]{脱耦的三代中微子和反中微子都只有一个内禀自由度。因为中微子都是左手征的，反中微子都是右手征的。}      
+    \item[3]{因为正反物质不对称，正负电子湮灭之后还留下了（相对于湮灭前而言）极少量电子，后续上演了各种（可能再次导致你萌生退课念头的）好戏，但它们拥有的熵和光子相比有亿点低（字面意思），所以不会影响光子整体的平均温度。}
+      \item[4]{中微子也可能存在$\sim \frac{\mu}{T}\lesssim 10^{-9}$ 量级的正反粒子不对称。我们在后续计算中将忽略这么微小的差异，丢掉化学势 $\mu$。}
+        \eitem
+
+  \end{frame}
+
+  \begin{frame}
+
+    为了计算正负电子湮灭后光子温度和中微子温度之比，我们来回顾一下玻色子（光子）气体和费米子（中微子）气体的熵——
+
+    \addfig{1}{HEwarn.jpg}
+  \end{frame}
+  
+
+  \begin{frame}
+    \frametitle{玻色分布和费米分布：分布函数}
+    你显然记得(\lfig{0.2}{tinyblackq.jpg})热统课里的（无势能，非极端简并的情况下）玻色分布和费米分布
+    $$\frac{dn}{d p} = \frac{g}{2\pi^2}\frac{p^2}{e^{\frac{\sqrt{p^2+m^2}- \mu}{T}}\mp 1}$$
+    这里的 $m$ 是静止质量，$\mu$ 是化学势, $p$ 是动量大小，$dn$ 是分布在 $p$ 和 $p+dp$ 间的粒子数密度, $g$ 是粒子内禀自由度个数（例如，光子的 $g=2$，因为它有两种螺旋度）。$-$对应玻色子，$+$对应费米子。
+
+
+    也可以把它们写成单位能量区间的分布：
+    $$\frac{dn}{d\epsilon} = \frac{g}{2\pi^2}\frac{\epsilon  \,\sqrt{\epsilon^2-m^2}}{e^{\frac{\epsilon- \mu}{T}}\mp 1} ,\ \ (\epsilon\ge m)$$
+
+
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{玻色分布和费米分布：粒子数密度}
+    对 $d\epsilon$ 积分可以得到粒子数密度：
+    $$ n = \frac{g}{2\pi^2}\int_m^\infty \frac{\epsilon\sqrt{\epsilon^2-m^2}d\epsilon}{e^{\frac{\epsilon- \mu}{T}}\mp 1}=   gK_{\mp}(1,\frac{m}{T},\frac{\mu}{T}) T^3.$$
+    这里的函数
+     $$K_{\mp}(n, \alpha, \beta) := \frac{1}{2\pi^2}\int_\alpha^\infty \frac{x^n\sqrt{x^2-\alpha^2}}{e^{x-\beta}\mp 1} dx $$
+    (\question emm, 这个积分看起来有亿点点难）
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{玻色分布和费米分布：能量密度和压强}
+    以 $\epsilon$ 为权重积分可以得到能量密度：
+    $$ \rho = \frac{g}{2\pi^2}\int_m^\infty \frac{\epsilon^2\sqrt{\epsilon^2-m^2}d\epsilon}{e^{\frac{\epsilon- \mu}{T}}\mp 1}=  gK_{\mp}(2,\frac{m}{T},\frac{\mu}{T}) T^4.$$
+    以 $\frac{p^2}{3\epsilon}$ 为权重积分可以得到压强（思考下为什么）：
+    $$P = \frac{g}{3}\left[ K_{\mp}(2,\frac{m}{T},\frac{\mu}{T}) -  \left(\frac{m}{T}\right)^2 K_{\mp}(0,\frac{m}{T},\frac{\mu}{T})\right] T^4.$$
+
+    \notes{对于零质量粒子，可以立即在上面的结果中验证 $P=\frac{1}{3}\rho$ }
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{玻色分布和费米分布：熵密度}
+    根据自由焓（也叫Gibbs自由能）的定义：
+    $$ G = U - TS + PV$$
+    这里 $U$ 是内能，$V$ 是体积；以及化学势$\mu$是粒子平均自由焓，就有
+    $$ n\mu = \rho - Ts + P$$
+    这里 $\rho, s$ 分别是单位体积的能量密度和熵密度。这样可以解出：
+    $$ s = g\left[\frac{4}{3}K_{\mp}(2,\frac{m}{T},\frac{\mu}{T}) - \frac{1}{3} \left(\frac{m}{T}\right)^2 K_{\mp}(0,\frac{m}{T},\frac{\mu}{T})-\frac{\mu}{T}K_{\mp}(1,\frac{m}{T},\frac{\mu}{T}) \right]T^3$$
+  \end{frame}
+
+
+
+  \begin{frame}
+    \frametitle{
+    平衡态玻色气体和费米气体的粒子数密度，能量密度，压强和熵密度的公式总结如下：}
+    {\blue \small
+      \bea
+      n &=&  gK_{\mp}(1,\frac{m}{T},\frac{\mu}{T}) T^3; \newl
+      \rho &=&  gK_{\mp}(2,\frac{m}{T},\frac{\mu}{T}) T^4; \newl     
+      P &=& \frac{g}{3}\left[ K_{\mp}(2,\frac{m}{T},\frac{\mu}{T}) -  \left(\frac{m}{T}\right)^2 K_{\mp}(0,\frac{m}{T},\frac{\mu}{T})\right] T^4; \newl
+      s &=& g\left[\frac{4}{3}K_{\mp}(2,\frac{m}{T},\frac{\mu}{T}) - \frac{1}{3} \left(\frac{m}{T}\right)^2 K_{\mp}(0,\frac{m}{T},\frac{\mu}{T})-\frac{\mu}{T}K_{\mp}(1,\frac{m}{T},\frac{\mu}{T}) \right]T^3.
+      \eea
+    }
+    这里
+    {\blue $$K_{\mp}(n, \alpha, \beta) = \frac{1}{2\pi^2}\int_\alpha^\infty \frac{x^n\sqrt{x^2-\alpha^2}}{e^{x-\beta}\mp 1} dx $$}
+    约定玻色子取 $K_{-}$，费米子取 $K_+$。
+    
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{别忙着点退课键}
+    好消息是：就本课程的目的而言，我们只要会算 $m=\mu=0$ 的最简单情况就可以了。
+
+    \addfig{1}{guakexian.jpg}
+
+    (之所以完整地讲这些，是考虑到万一你要研究原初重子数生成等秃头课题呢……)
+
+    
+  \end{frame}
+  
+
+  \begin{frame}
+    \frametitle{$K_{\mp}$的一些特殊值}
+    用围道积分或者任何 \sout{令你头秃的}你喜欢的 技巧，可以很轻松地推出
+
+    {\blue $$K_{-}(n,0,0) = \frac{(n+1)!}{2\pi^2}\zeta(n+2);\ \ K_{+}(n,0,0) = \left(1-\frac{1}{2^{n+1}}\right)K_{-}(n,0,0) $$ }   
+    这里的
+    $$\zeta(s) = \sum_{k=1}^\infty \frac{1}{k^s}$$
+    是著名的 Riemann-zeta 函数(你在试图证明黎曼猜想时一定见过吧)。我们知道 $\zeta(2) = \frac{\pi^2}{6}$,  $\zeta(4) =\frac{\pi^4}{90}$，以及 $\zeta(3) = 1.202056903\ldots$，$\zeta(5) = 1.036927755\ldots$
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{极端相对论情形}
+    在极端相对论并且无明显正反物质不对称的情形（$T\gg m,\mu$），可以近似取 $\frac{m}{T}=0, \frac{\mu}{T} = 0$，并利用刚才给出的 $K_{\mp}(n, 0, 0)$ 的值，得到:
+
+    \skipline
+
+        \bmini{0.48}
+        {\scriptsize 极端相对论零化学势玻色子，}
+    {\blue
+      \bea
+      n_{\rm boson} &=&  \frac{g\zeta(3)}{\pi^2} T^3; \newl
+      \rho_{\rm boson} &=&  \frac{g\pi^2}{30} T^4; \newl     
+      P_{\rm boson} &=& \frac{g\pi^2}{90}T^4; \newl
+      s_{\rm boson} &=& \frac{2g\pi^2}{45}T^3.
+      \eea
+    }
+      \emini
+    \bmini{0.48}
+     {\scriptsize 极端相对论零化学势费米子，}
+    {\blue
+      \bea
+      n_{\rm fermion} &=& \frac{3}{4}n_{\rm boson}; \newl
+      \rho_{\rm fermion} &=& \frac{7}{8}\rho_{\rm fermion}; \newl
+      P_{\rm fermion} &=& \frac{7}{8}P_{\rm boson}; \newl
+      s_{\rm fermion} &=& \frac{7}{8} s_{\rm boson}.
+      \eea
+    }
+      \emini
+      
+
+  \end{frame}
+  
+
+
+  \begin{frame}
+    \frametitle{正负电子湮灭导致的升温}
+    在 $T\gg \SIMeV$ 时，单位共动体积内的正负电子($g=2+2=4$)、光子($g=2$)的总熵是：
+    $$ sa^3 = (4\times \frac{7}{8} + 2) \frac{2\pi^2}{45}(aT)^3 = \frac{11}{2}\frac{2\pi^2}{45}(aT)^3 $$
+    根据宇宙学原理，共动体积之间互间等温且没有热量的净流动，因此共动体积内的熵守恒，所以这个阶段 $aT$ 保持不变。
+
+    当温度降到 $0.5\SIMeV$ 附近，正负电子（湮灭）自由度消失：
+    $$ sa^3 = 2 \frac{2\pi^2}{45}(aT)^3 $$    
+    也就是说，这时的光子气体的 $aT$ 必须涨到之前的光子-正负电子气体的 $aT$ (这也是中微子的 $aT$) 的 $\left(\frac{11}{4}\right)^{1/3} \approx 1.4$ 倍，才能保持 $sa^3$ 不变。
+  \end{frame}
+  
+
+  \begin{frame}
+    \frametitle{宇宙中微子背景(CNB)的温度}
+
+    All in all, 结论就是：在正负电子湮灭之后（$T\ll 0.5\SIMeV$） ，宇宙的光子背景温度是中微子背景温度的 $1.4$ 倍。
+    
+    我们今天看到的宇宙光子背景（宇宙微波背景辐射，CMB）的温度是 $T_{\rm CMB} = 2.726 \SIK$，由此可以推算出CNB的等效温度为：
+
+    $$ T_{\rm CNB} = \left(\frac{4}{11}\right)^{1/3}T_{\rm CMB} \approx 1.95\SIK$$
+
+    可惜的是：观测中微子背景及其困难，以目前的实验技术手段毫无希望检验这个预言。
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{$N_{\rm eff}=3.046$ 是什么鬼？}
+    我们说脱耦留下的中微子有三代（$e$中微子，$\mu$子中微子，$\tau$子中微子），但在文献中经常看到 $N_{\rm eff} = 3.046$. 这是因为中微子在脱耦时并不完全处于热平衡态，有个小的修正。
+
+    \skiplines
+    
+    所以，中微子的等效 $g = 2N_{\rm eff} = 6.092$。
+  \end{frame}
+
+  
+  \begin{frame}
+    \frametitle{$\Omega_r$的计算}
+    如果中微子质量可以忽略，那么可以把它当成辐射形式能量。那么光子($g=2$)能量密度：
+    $$\rho_{\gamma 0} = \frac{2\pi^2}{30}T_{\rm CMB}^4 $$
+    和中微子($g=2N_{\rm eff}$)能量密度
+    $$\rho_{\nu 0} = \frac{7}{8}\frac{2N_{\rm eff}\pi^2}{30}T_{\rm CNB}^4 = \frac{7}{8}\frac{2N_{\rm eff}\pi^2}{30}\left(\frac{4}{11}\right)^{4/3}T_{\rm CMB}^4  $$
+    一共贡献了(Planck单位制下）：
+
+      $$\Omega_r = \frac{8\pi}{3H_0^2} \frac{\pi^2\left(1+\frac{7}{8}\left(\frac{4}{11}\right)^{4/3}N_{\rm eff}\right)T_{\rm CMB}^4}{15}$$
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{好用的形式}
+    把 $T_{\rm CMB}=2.726\SIK$, $N_{\rm eff}=3.046$ 代入并使用 units.py 进行普通单位制到Planck单位制的转化，得到： 
+    $$\Omega_r  = \frac{2.4748\times(1+0.2271N_{\rm eff})}{h^2}\times 10^{-5}=\frac{4.187}{h^2}\times 10^{-5}$$
+    这里的 $h$ 由 $H_0 = 100h\,\mathrm{km/s/Mpc}$ 定义。
+
+    \skipline
+    
+    代入 $h\approx 0.7$ 可以得到 $\Omega_r$ 大约为 $8.5\times 10^{-5}$，其中光子贡献了约 $60\%$，中微子贡献了约 $40\%$。
+  \end{frame}
+
+  
+  \section{Neutrinos in Late Universe}
+  \secpage{晚期宇宙的中微子}{你以为高能预警已经结束了？不，并没有。}
+
+  \begin{frame}
+    \frametitle{中微子质量非零}
+    前面我们假设了中微子质量可以忽略。实际上，中微子振荡实验已经确定三代中微子质量之和有个大约为 $0.06\SIeV$ 的下限（在质量反常排序模型中这个下限是 $0.1\SIeV$ 左右）。也就是说，在 $z\lesssim 100$ 的晚期宇宙，把中微子当成辐射形式能量不太靠谱。
+
+    \skipline
+
+    好在这对宇宙膨胀的计算只是个小的修正：因为在红移 $z\lesssim 300$，中微子的能量占比很小（除非中微子质量远超过 $0.1\SIeV$ 的量级，但这会导致很多和观测的不一致性）。
+  \end{frame}
+  
+
+
+  \begin{frame}
+    \frametitle{中微子的动量变化规律}
+    为了修正以前的粗糙计算，我们希望在红移 $z$ 更加精确地计算中微子的能量密度和压强。
+
+    \skipline
+    
+    不妨设某个中微子的四维动量是 $(p^t, p^r, 0, 0)$，测地线方程为：
+    $$ \frac{dp^t}{dt} + \frac{a\dot a}{1-kr^2}\frac{(p^r)^2}{p^t} =0 $$
+    再利用 $(p^t)^2 - \frac{a^2}{1-kr^2}(p^r)^2 = m^2$，上式等价于
+    $ a\sqrt{(p^t)^2-m^2}$ 守恒。也就是说，{\blue FRW坐标系的静止观测者看到的自由粒子的三维动量大小都按 $\frac{1}{a}$ 衰减}。
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{中微子分布函数}
+    由于 $q\equiv ap$ 是守恒的（这里 $p$ 是FRW坐标系的静止观测者看到的中微子三维动量大小），设脱耦时的尺度因子为 $a^*$，温度为 $T^*$，则每种中微子的分布函数都是：
+
+    $$\left(\frac{a}{a^*}\right)^3dn = \frac{1}{2\pi^2}\frac{\left(\frac{q}{a^*}\right)^2d\frac{q}{a^*}}{e^{\frac{q}{a^*T^*}}+1}$$
+    因为随着宇宙的膨胀，$a^3dn$ 是守恒量，所以我们把 $dn$ 乘以了 $\left(\frac{a}{a^*}\right)^3$ 以换算到脱耦时刻。
+
+    注意到 $a^*T^* = T_{\rm CNB}=1.95\SIK$ (对质量不可忽略的中微子而言，$T_{\rm CNB}$ 只具有分布函数中的参数的意义)， 就有
+
+    $$ a^3dn = \frac{1}{2\pi^2}\frac{q^2dq}{e^{\frac{q}{T_{\rm CNB}}}+1}$$
+
+  \end{frame}
+  
+
+  \begin{frame}
+    \frametitle{中微子能量密度}
+    每种中微子的能量密度 $\rho$ 就满足
+    $$\rho a^3 = \frac{1}{2\pi^2}\int_0^\infty \frac{q^2dq\sqrt{\frac{q^2}{a^2}+m^2}}{e^{\frac{q}{T_{\rm CNB}}}+1}$$    
+    做变量替换 $x = q/T_{\rm CNB}$ 可以得到：
+    $$\rho a^4 = \mathrm{I}_\rho\left(\frac{ma}{T_{\rm CNB}}\right) T^4_{\rm CNB} $$
+    这里的
+    $$ \mathrm{I}_\rho(\lambda) \equiv  \frac{1}{2\pi^2}\int_0^\infty \frac{x^2\sqrt{x^2+\lambda^2}}{e^x+1}dx$$    
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{$\mathrm{I}_\rho(\lambda)$ 的计算}
+    当 $\lambda \ll 1$，有
+    $$ \mathrm{I}_\rho(\lambda) \approx \frac{7\pi^2}{240} + \frac{1}{48}\lambda^2 $$
+    当 $\lambda \gg 1$，有
+    $$ \mathrm{I}_\rho(\lambda) \approx \frac{3\zeta(3)}{4\pi^2}\lambda + \frac{45\zeta(5)}{8\pi^2}\frac{1}{\lambda} $$ %$$\sum_{n=0}^\infty  \left(1-\frac{1}{2^{2n+2}}\right)\begin{pmatrix}\frac{1}{2} \\ n \end{pmatrix}\frac{(2n+2)!\zeta(2n+3)}{2\pi^2}\lambda^{1-2n}$$
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{中微子压强}
+    每种中微子的压强 $\rho$ 就满足
+    $$pa^3  = \frac{1}{2\pi^2}\int_0^\infty \frac{\frac{q^2}{a^2}}{3\sqrt{\frac{q^2}{a^2}+m^2}}\frac{q^2dq}{e^{\frac{q}{T_{\rm CNB}}}+1}$$    
+    做变量替换 $x = q/T_{\rm CNB}$ 可以得到：
+    $$ pa^4 = \mathrm{I}_p\left(\frac{ma}{T_{\rm CNB}}\right) T^4_{\rm CNB} $$
+    这里的
+    $$ \mathrm{I}_p(\lambda) \equiv  \frac{1}{6\pi^2}\int_0^\infty \frac{x^4}{\sqrt{x^2+\lambda^2}\left(e^x+1\right)}dx$$    
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{$\mathrm{I}_p(\lambda)$ 的计算}
+    当 $\lambda \ll 1$，有
+    $$ \mathrm{I}_p(\lambda) \approx \frac{7\pi^2}{720} - \frac{1}{144}\lambda^2 $$
+    当 $\lambda \gg 1$，有
+    $$ \mathrm{I}_p(\lambda) \approx \frac{15\zeta(5)}{4\pi^2}\frac{1}{\lambda} $$ %$$\sum_{n=0}^\infty  \left(1-\frac{1}{2^{2n+4}}\right)\begin{pmatrix}-\frac{1}{2} \\ n \end{pmatrix}\frac{(2n+4)!\zeta(2n+5)}{6\pi^2}\lambda^{-1-2n}$$
+
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{代码}
+    网站上分享了简单的计算 $I_\rho$ 和 $I_p$，以及考虑到中微子质量非零后的宇宙年龄、各种距离、共动体积等的计算。
+
+    \addfig{2.}{dudong.jpg}
+
+    为了让你读得懂代码，我牺牲了一点点精度，中微子的质量修正的计算误差只控制在千分之一左右。不过，考虑到中微子质量修正只发生在晚期宇宙，这时中微子的能量占比不超过百分之几，所以总体计算（如$H(z)$)误差大致仍控制在 $10^{-5}$ 量级。
+  \end{frame}
+  
+  
+    \ech
+\end{document}
+
+
+
+
+  

@@ -1,0 +1,358 @@
+\documentclass[CJK,13pt]{beamer}
+\input{macros.tex}
+\input{titlepage.tex}
+  \date{}
+  \begin{document}
+  \bch
+\tpage{2}{General Relativity}
+
+
+\section{Metric and Tensor}
+
+\secpage{度规}{$$ ds^2 =  g_{\mu\nu} dx^\mu dx^\nu $$}
+
+\begin{frame}
+  按照惯例，我们从真空中的球形火鸡开始研究物理：
+
+  \addfig{1.6}{sphericalchicken.jpg}
+
+  
+\end{frame}
+
+\begin{frame}
+  \frametitle{球面坐标的“度规”}
+  我们都有在一个曲面上建立坐标系的经验，例如一个半径为 $R$ 的球面上的点可以用球坐标系的分坐标 $(\theta,\phi)$ 来表述。球面上很接近的两点之间的距离平方可以用
+  $$ ds^2 = R^2d\theta^2 + R^2\sin^2\theta d\phi^2, $$
+  来表示。
+
+  我们把它写成矩阵形式
+  $$ ds^2 =  \begin{pmatrix}
+    d\theta & d\phi 
+  \end{pmatrix}
+  \begin{pmatrix}
+    R^2 & 0 \\
+    0 & R^2\sin^2\theta
+  \end{pmatrix}
+ \begin{pmatrix}
+   d\theta \\
+   d\phi 
+  \end{pmatrix}  
+ $$
+ 这个矩阵
+ $\begin{pmatrix}  R^2 & 0 \\    0 & R^2\sin^2\theta  \end{pmatrix}$
+ 称为{\blue 度规(metric)} ，约定要求它是对称矩阵，但{\blue 一般情况下它不一定是对角的}。
+\end{frame}
+
+\begin{frame}
+  \frametitle{球坐标的度规}
+  你可能已经意识到了，球坐标系下的“线元平方”
+  $$ ds^2 = dr^2 + r^2d\theta^2 + r^2\sin^2\theta d\phi^2$$
+  里也包含一个看起来不太平凡的度规
+  $$
+  \begin{pmatrix}
+    1 & 0   & 0 \\
+    0 & R^2 & 0 \\
+    0 & 0   & R^2\sin^2\theta
+  \end{pmatrix}
+  $$
+  但是，这个情况和球面上的情况存在本质差别——
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{球坐标系进行坐标变换}
+  做坐标变换 $r=\sqrt{x^2+y^2+z^2}$, $\theta=\arccos\frac{z}{r}$, $\phi=\arccos\frac{x}{\sqrt{x^2+y^2}}$, 在新坐标系下的度规：
+  
+  \bcode{coortrans.py}
+\begin{verbatim}
+import sympy as sym
+x,y,z = sym.symbols('x,y,z') 
+r = sym.sqrt(x**2+y**2+z**2)
+theta = sym.acos(z/r)
+phi = sym.acos(x/sym.sqrt(x**2+y**2))
+coor = sym.Matrix([r, theta, phi])
+xyz = sym.Matrix([x, y, z])
+metric = sym.diag(1, r**2, r**2*sym.sin(theta)**2)
+jac = coor.jacobian(xyz) 
+print(sym.simplify(jac.T*metric*jac))
+\end{verbatim}        
+\ecode
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{球坐标系进行坐标变换}
+  输出的度规矩阵是个单位矩阵，也就是
+  $$ds^2=dx^2+dy^2+dz^2.$$
+  这显然是因为我们通过坐标变换，从球坐标系转换到了直角坐标系。
+
+  \skipline
+  
+  前面二维球面的例子却不一样——你知道球面是弯曲的，在上面无论如何也无法建立直角坐标系。
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{弯曲的时空}
+  现在来看平直的四维时空的时空距离元平方：
+  $$ ds^2 = dt^2 - dx^2-dy^2-dz^2 .$$
+  这个度规，也就是 $\diag{(1,-1,-1,-1)}$ ，称为 {\blue Minkowski 度规}。
+  
+  \skiplines
+  
+  在弯曲的时空中，无论你采取何种坐标系，都无法使度规是 Minkowski 度规。这时就要用到{\blue 广义相对论}。
+
+  \skiplines
+  
+  \warn{在有些文献中习惯取 $\diag{(-1,1,1,1)}$为Minkowski度规。选哪种约定无关紧要，重要的是你从一而终。}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{ 时空坐标的标记}
+一般性地，四维时空可以用坐标$(x^0, x^1, x^2, x^3)$来标记。而 $x^\mu$ 则代表任意的坐标分量（即希腊字母 $\mu$ 可以取 $0,1,2,3$ 中的任意一个）。
+
+
+度规则用对称矩阵 $g_{\mu\nu}$ 来表示，这样距离元平方
+\be
+ds^2=\begin{pmatrix}dx^0 & dx^1 & dx^2 & dx^3 \end{pmatrix}
+\begin{pmatrix}
+  g_{00} & g_{01} & g_{02} & g_{03} \\
+  g_{10} & g_{11} & g_{12} & g_{13} \\
+  g_{20} & g_{21} & g_{22} & g_{23} \\
+  g_{30} & g_{31} & g_{32} & g_{33}
+\end{pmatrix}
+\begin{pmatrix}
+  dx^0 \\
+  dx^1 \\
+  dx^2 \\
+  dx^3
+\end{pmatrix}
+\ee
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{爱因斯坦求和规则}
+  上面的矩阵乘法也可以写成求和的形式：
+$$ds^2 = \sum_{\mu=0}^3\sum_{\nu=0}^3 g_{\mu\nu} dx^\mu dx^\nu$$
+  今后我们要采用爱因斯坦求和规则，就是把{\blue 重复出现的、一上一下的每对指标默认求和}。
+
+  \addfig{1}{einstein.jpg}
+  
+  那么上式就可以写成广义相对论中标准的形式
+\tbox{$$ ds^2 =  g_{\mu\nu} dx^\mu dx^\nu .$$}
+
+\end{frame}
+
+
+\section{tensor}
+\secpage{张量}{坐稳了，我们要飚车了}
+
+
+\begin{frame}
+  \frametitle{协变和逆变}
+  坐标 $x^\mu$ 的指标写在上面， 这种指标称为{\blue 逆变(contravariant)指标}。
+  度规 $g_{\mu\nu}$ 的指标写在下面，这种指标称为{\blue 协变(covariant)指标}。
+
+
+  \skiplines
+  
+  在经典物理中，绝大多数的物理量都是用张量描述的。虽然张量是物理客观对象，但是它的“分量”（即当所有指标取确定值时对应的数）是它在坐标系里的某种形式的投影。“逆变”和“协变”只是不同的投影方式而已。
+\end{frame}
+
+\begin{frame}
+\frametitle{ 张量(tensor)的定义 }
+
+在坐标变换$x \rightarrow \tilde{x}$下，如果一个带指标的量 $\tilde{T}^{\mu\nu\ldots}_{\ \ \alpha\beta\ldots}$ 的分量满足下述变化规律：
+
+
+$$\tilde{T}^{\mu\nu\ldots}_{\ \ \alpha\beta\ldots} = \left(\frac{\partial \tilde{x}^\mu}{\partial x^\rho}\frac{\partial \tilde{x}^\nu}{\partial x^\sigma} \frac{\partial x^\gamma }{\partial \tilde{x}^\alpha}\frac{\partial x^\lambda}{\partial \tilde{x}^\beta} \ldots \right)T^{\rho\sigma\ldots}_{\ \ \gamma\lambda\ldots} $$
+
+这个量$\tilde{T}^{\mu\nu\ldots}_{\ \ \alpha\beta\ldots}$ 就称为张量。指标的个数称为张量的阶数。零阶张量（在坐标变换下不变）也称为标量。一阶张量也称为矢量。
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{度规的逆变形式}
+  度规是很特殊的一个二阶张量，我们已经熟悉了它的协变形式($g_{\mu\nu}$ 矩阵)，它的{\blue 逆变形式($g^{\mu\nu}$ 矩阵)可以通过把协变形式的度规矩阵求逆得到}。
+
+  \skipline
+
+  也就是说，协变度规矩阵 ($g_{\mu\nu}$) 和逆变度规矩阵 ($g^{\mu\nu}$) 互为逆矩阵，用爱因斯坦求和规则写出来就是：
+  $$g^{\mu\lambda}g_{\lambda\nu} = \delta^\mu_{\ \nu}.$$
+  这里的Kronecker符号 $\delta^\mu_{\ \nu}$ 是单位矩阵的矩阵元，当 $\mu=\nu$ 时取值为 $1$，否则取值为零。
+\end{frame}
+
+\begin{frame}
+\frametitle{ 张量指标的升降}
+
+其余张量的逆变形式和协变形式之间的转换可{\bf 不是}通过逆矩阵来定义的。它们的{\blue 指标通过度规来升降}：
+
+\skipline
+
+\bex
+$$F_{\mu\nu} = g_{\mu\rho}g_{\nu\sigma}F^{\rho\sigma}$$
+$$T^{\mu}_{\ \nu\rho} = g^{\mu\sigma} T_{\sigma\nu\rho}$$
+$$g^{\mu}_{\ \nu} = g^{\mu\rho}g_{\rho\nu} = \delta^{\mu}_{\ \nu}$$
+\eex
+\end{frame}
+
+\begin{frame}
+  \frametitle{指标升降规则的自洽性}
+  \addfig{1}{ziqia.jpg}
+  请自行完成下面简单事实的证明
+  \bitem
+\item{把张量的任意一个指标升上去再降下来，或者降下来再升上去，都等价于没有任何操作。}
+\item{度规张量的指标升降也可以用普通张量的指标升降规则进行。}
+\item{度规的混合形式 $g^\mu_{\ \nu}$ 其实就是Kronecker符号 $\delta^\mu_{\ \nu}$。}
+  \eitem
+\end{frame}
+
+
+\begin{frame}
+\frametitle{ 张量的直积}
+
+一个m阶张量和一个n阶张量可以直接相乘生成m+n阶张量。
+
+\skipline
+
+\bex
+$dx^\mu dx^\nu$是二阶张量。
+
+$g_{\mu\nu}g^{\rho\sigma}$ 是四阶张量
+\eex
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{ 张量指标的收缩}
+
+张量的上下指标可以收缩，产生低两阶的张量。
+
+\skipline
+
+\bex
+$$dx^\mu dx_\mu = ds^2$$
+$$g^{\mu}_{\ \mu} = 4$$
+$$g^{\mu\rho}g_{\rho\nu} = \delta^{\mu}_{\ \nu}$$
+\eex
+\end{frame}
+
+
+\begin{frame}
+\frametitle{思考题}
+
+如果$\phi$是标量，那么$\phi_{,\mu} \equiv \frac{\partial \phi}{\partial x^\mu}$是张量吗？ $\phi_{,\mu,\nu}\equiv \frac{\partial^2 \phi}{\partial x^\mu\partial x^\nu}$ 呢？
+
+
+\addfig{1}{lan.jpg}
+
+（这里{\blue 用逗号后面跟指标来表示对坐标的偏导}是广义相对论里的常规偷懒操作）
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{协变微商(covariant derivative)}
+  带指标的张量求普通微商(逗号后面跟指标)后一般不是张量。在弯曲的空间里有一种新的微商叫做{\blue 协变微商}（分号后面跟指标）可以保证张量求协变微商后还是张量。例如，逆变形式矢量的协变微商是：
+  $$A^\alpha_{\ ;\nu} = A^\alpha_{\ ,\nu}+\Gamma^\alpha_{\ \mu\nu}A^\mu $$
+  这里的
+  {\blue  $$\Gamma^\alpha_{\ \mu\nu}=\frac{1}{2}g^{\alpha\lambda}\left(g_{\lambda\mu,\nu}+g_{\lambda\nu,\mu}-g_{\mu\nu,\lambda}\right),$$}
+  \bmini{0.6}
+  它有个你记不住的名字，叫{\blue Christoffel-Levi-Civita联络，简称 Christoffel 联络}。
+  \emini
+  \bmini{0.35}
+  \addfig{0.9}{levicivita.png}
+  \emini
+  
+  
+\end{frame}
+
+\begin{frame}
+  一般高阶张量的协变微商计算规则如下：
+  {\blue
+  \bea
+  \left(T^{\mu_1\mu_2\ldots}_{\ \ \ \ \nu_1\nu_2\ldots}\right)_{;\lambda} &=& \left(T^{\mu_1\mu_2\ldots}_{\ \ \ \ \nu_1\nu_2\ldots}\right)_{,\lambda} \newl
+  && + \Gamma^{\mu_1}_{\ \rho\lambda} T^{\rho\mu_2\ldots}_{\ \ \ \ \nu_1\nu_2\ldots} + \Gamma^{\mu_2}_{\ \rho\lambda} T^{\mu_1\rho\ldots}_{\ \ \ \ \nu_1\nu_2\ldots} + \ldots \newl
+  && - \Gamma^\rho_{\nu_1\lambda}T^{\mu_1\mu_2\ldots}_{\ \ \ \ \rho\nu_2\ldots} - \Gamma^\rho_{\nu_2\lambda}T^{\mu_1\mu_2\ldots}_{\ \ \ \ \nu_1\rho\ldots}-\ldots
+  \eea
+  }
+
+  \addfig{0.9}{hairgone.jpg}
+  
+  协变微商大多数性质和普通微商一样，例如对任意张量 $A,B$ 有 $$(AB)_{;\mu} = A_{;\mu}B+AB_{;\mu}.$$
+  \warn{但是要注意高阶协变微商的次序不可随意交换。}
+\end{frame}
+
+
+\section{General Relativity}
+
+\secpage{广义相对论}{$$G_{\mu\nu}=8\pi G T_{\mu\nu}$$}
+
+\begin{frame}
+  \frametitle{广义相对论的两个方程}
+  John Archibald Wheeler的著名金句：
+  \tbox{Matter tells spacetime how to curve, and spacetime tells matter how to move.}
+  
+  从实际应用的角度讲，你只需要了解广义相对论给出了两个方程：{\blue 引力场方程描述了时空如何受物质的影响而弯曲；测地线方程描述了粒子在弯曲的时空中如何运动。}  
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{测地线(geodesic)方程}
+  \tbox{  $$\frac{d p^\alpha}{dt} + \Gamma^{\alpha}_{\mu\nu}\frac{p^\mu p^\nu}{p^0} = 0$$}
+  这里的 $t=x^0$， $p^\alpha$ 是粒子的四维动量。
+
+  \skipline
+
+  对静质量$m\ne 0$的粒子， {\blue $p^\alpha = m\frac{dx^\alpha}{ds}$}，这里的 $ds$ 是前面介绍的四维时空距离间隔。因此测地线方程也可以写成
+  \tbox{  $$\frac{d^2 x^\alpha}{ds^2} + \Gamma^{\alpha}_{\mu\nu}\frac{dx^\mu}{ds}\frac{dx^\nu}{ds} = 0$$}
+  
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{引力场方程}
+  \tbox{$$G^{\mu\nu} = 8\pi G T^{\mu\nu}$$}
+  或者等价地
+  \tbox{$$R^{\mu\nu} = 8\pi G \left(T^{\mu\nu}-\frac{1}{2}Tg^{\mu\nu}\right)$$}  
+  这里的 $G_{\mu\nu}$ 叫做Einstein张量，$R_{\mu\nu}$ 叫做 Ricci 张量；它们都可以用度规和度规的一阶、二阶偏导数计算出来。具体的计算公式见附录A。
+
+  $T^{\mu\nu}$ 是物质的能量动量张量，$T\equiv T^\mu_{\ \mu}$ 是它的迹。在附录B中给出了理想流体的 $T^{\mu\nu}$。
+\end{frame}
+
+
+\section{Appendix: A}
+
+\begin{frame}
+  \frametitle{附录A：Riemann张量，Ricci张量和Einstein张量}
+  Riemann张量定义为
+  $$R^\lambda_{\ \mu\alpha\beta} = \Gamma^\lambda_{\ \mu\alpha,\beta} + \Gamma^\rho_{\ \mu\alpha}\Gamma^\lambda_{\ \rho\beta} -[\alpha \leftrightarrow\beta]$$
+  这里的 $[\alpha \leftrightarrow\beta]$ 表示把前面两项的 $\alpha,\beta$ 互换。
+
+  Ricci张量可以由Riemann张量导出
+  $$  R_{\mu\nu} = R^\rho_{\ \mu\nu\rho}$$
+  Einstein 张量可以由Ricci张量导出
+  $$ G^{\mu\nu} = R^{\mu\nu}-\frac{1}{2}R g^{\mu\nu}$$
+  这里的Ricci标量$R$是Ricci张量的收缩 $R\equiv R^\mu_{\ \mu}$。
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{附录B：理想流体的能量动量张量}
+  理想流体的能量动量张量为
+  $$ T^{\mu\nu} = (\rho+p)u^\mu u^\nu - p g^{\mu\nu}$$
+  上面各个符号是这样定义的：理想流体的每一个四维时空点 $x$ 都有一个“宏观速度” $u^\mu$，和流体宏观速度共动的观测者看到附近的流体是各向同性的，该观测者可以测得一个能量密度 $\rho$ 和压强 $p$。
+\end{frame}
+
+
+\ech
+\end{document}
