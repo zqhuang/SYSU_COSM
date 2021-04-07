@@ -1,0 +1,166 @@
+\documentclass[CJK,13pt]{beamer}
+\input{macros.tex}
+\input{titlepage.tex}
+  \date{}
+  \begin{document}
+  \bch
+  \tpage{7}{Growth Function $D(z)$}
+
+  \section{Growth Equation}
+  \secpage{结构增长方程}{$$ \frac{d^2 D}{dt} + 2H\frac{d D}{d t} - \frac{3H_0^2}{2a^3}\Omega_mD =0$$}
+
+  \begin{frame}
+    \frametitle{现在问题来了}
+    \addfig{2}{SDSS.jpg}
+    
+    我们看到的真实宇宙显然并不严格地均匀各向同性，而且正在变得越来越不均匀。
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{冷物质的连续性方程}
+    我们仅考虑{\blue 固定的很小的共动坐标区域内}的最简单的冷物质（CDM+普通原子，非相对论运动），设共动体积密度为 $\rho$，流体元的共动坐标速度为 $\mathbf{u}$，
+    流体的欧拉系连续性方程就是：
+    $$ \frac{\partial \rho}{\partial t} + \nabla\cdot(\rho \mathbf{u}) = 0.$$
+    \warn{这里的 $\nabla$ 是空间共动坐标里的形式梯度算符，物理梯度算符应该是 $\frac{1}{a}\nabla$。不过，连续性方程只是由物质守恒导出，不依赖于坐标是否代表物理长度。}
+  \end{frame}
+
+  
+  \begin{frame}
+    \frametitle{连续性方程的一阶微扰}
+    在一阶微扰论里，我们把 $\rho$ 写成 $\bar{\rho}(1+\delta)$，这里的 $\bar{\rho} = \frac{3H_0^2}{8\pi G}\Omega_m$ 是宇宙平均冷物质的共动体积密度——它是个常数。
+    连续性方程就成为：
+    $$ \bar{\rho}\frac{\partial \delta}{\partial t} + \bar{\rho}(1+\delta)\nabla\cdot \mathbf{u} + \bar{\rho}\mathbf{u}\cdot \nabla\delta = 0.$$
+
+    把 $\delta,\mathbf{u}, \nabla\delta, \nabla\cdot \mathbf{u}$ (以及后面会出现的引力势$\Phi$) 都视为一阶小量，那么保留到一阶近似的连续性方程就是：
+    {\blue $$ \frac{\partial \delta}{\partial t} + \nabla\cdot \mathbf{u} = 0,$$}
+
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{速度演化方程}
+    如果没有宇宙的膨胀（即忽略 $a$ 的时间演化），那么物理速度 $a\mathbf{u}$ 会被引力 $\mathbf{F}=-\frac{1}{a}\nabla \Phi$ 加速（冷物质忽略压强的作用）。流体力学里给出的速度演化方程就是
+    $$\frac{\partial (a\mathbf{u})}{\partial t} +\left((a\mathbf{u})\cdot \frac{1}{a}\nabla\right)(a\mathbf{u}) + \frac{1}{a}\nabla\Phi = 0.$$
+    忽略掉二阶小量后就是：
+    $$\frac{\partial (a\mathbf{u})}{\partial t} + \frac{1}{a}\nabla\Phi = 0.$$
+    事实上，在忽略 $a$ 的时间演化的前提下，我们可以把上式乘以 $a^{n+1}$ ($n$任意)，得到等价的形式。
+    $$\frac{\partial (a^{n+2}\mathbf{u})}{\partial t} + a^n\nabla\Phi = 0.$$
+    下面我们考虑宇宙的膨胀，并用测地线方程来确定 $n$。
+
+    
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{结构增长方程}
+    因为当 $\Phi=0$ 时，流体元在 FRW 坐标系做FRW坐标系的自由运动，我们前面一讲中已经根据测地线方程得知物理速度 $a\mathbf{u}$ 和尺度因子的乘积(即$a^2\mathbf{u}$)守恒。再对比上式，我们确定了 $n=0$，即：
+    {\blue $$\frac{\partial \left(a^2\mathbf{u}\right)}{\partial t} = -\nabla \Phi. $$}
+    这里的推导并不严谨（但不费脑子），更严谨亿点点（但容易秃）的推导可以参考 Mukhanov，Weinberg等大佬的书。
+
+    把连续性方程和速度演化方程联立起来,就得到
+  $$ \frac{\partial^2 \delta}{\partial t} + 2H\frac{\partial\delta}{\partial t} - \frac{1}{a^2}\nabla^2\Phi =0. $$
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{引力泊松方程}
+    由于平均物质密度导致的度规变化已经在Friedmann方程里考虑了，所以引力泊松方程的源其实应该是物理密度的扰动 $a^{-3}\bar{\rho}\delta = \frac{3H_0^2}{8\pi Ga^3}\Omega_m\delta$，也就是
+    $$ \frac{1}{a^2}\nabla^2\Phi = \frac{3H_0^2}{2a^3}\Omega_m\delta,$$
+    代入前面得到的结果，就得到{\blue 大尺度结构线性扰动增长方程}
+    \tbox{$$ \frac{\partial^2 \delta}{\partial t^2} + 2H\frac{\partial\delta}{\partial t} - \frac{3H_0^2}{2a^3}\Omega_m\delta =0.$$}
+  \end{frame}
+    
+
+  \begin{frame}
+    \frametitle{结构线性增长因子（Linear Growth Factor)和结构增长率(Linear Growth Rate)}
+    注意到 $\delta$ 的偏微分方程和共动坐标位置无关，于是 $\delta$ 的增长规律是普适的，可以写成：
+    $$\delta(t, r,\theta,\phi) = D(t) \delta(t_0, r,\theta,\phi) $$
+    这里的 $D$ 称为结构线性增长因子。它满足 $D(t_0)=1$ 以及
+   \tbox{$$ \frac{d^2 D}{dt} + 2H\frac{d D}{d t} - \frac{3H_0^2}{2a^3}\Omega_mD =0.$$}
+    在宇宙学中，还会用到一个量 $f \equiv \frac{d\ln D}{d\ln a}$，这个 $f$ 叫线性结构增长率，它在星系的红移畸变（后续课程会讲到）的计算中会出现。    
+  \end{frame}
+
+
+  \section{Numeric Implementation}
+  \secpage{$D(z)$ 的数值计算方法}{学了理论还没秃？来写点代码…}
+
+  \begin{frame}
+    \frametitle{代码}
+    在我给出的具体代码中，我实际上演化的是 $G\equiv \frac{D}{a}$ 作为 $N\equiv\ln a$ 的函数。 通过变量替换可以得到$G(N)$的演化方程：
+    $$ \frac{d^2G}{dN^2}+\left(4+\frac{\dot H}{H^2}\right)\frac{dG}{dN} + \left(3+\frac{\dot H}{H^2} - \frac{3H_0^2}{2H^2a^3}\Omega_m\right)G = 0.$$
+    至于 $H$ 以及 $\dot H$ 如何依赖于 $N$，则要看具体的模型。
+  \end{frame}
+
+
+  \thinkc{在$w_0$-$w_a$模型里，请证明
+\bea
+\frac{\dot H}{H_0^2} &=&  -2\Omega_ra^{-4}  -\frac{3}{2}\Omega_ma^{-3} -\Omega_ka^{-2} \newl
+&& -\frac{3}{2}\left[1+w_0+w_a(1-a)\right]\Omega_{\rm DE}e^{-3\left[(1+w_0+w_a)\ln a + w_a(1-a)\right]}
+\eea
+  }
+
+
+  \thinkd{ 证明：如果宇宙中仅有冷物质，那么 $G\equiv \frac{D}{a}=1$。}
+    
+  \begin{frame}
+    \frametitle{初始条件}
+    在数值求解时，初始的 $G$ 可以任意地归一化，只要得到解以后我们要再把 $G$ 重新归一化就行了。但是，初始的 $dG/dN$ 该怎么取呢？
+    
+    当 $a$ 很小但仍远大于 $a_{\rm eq}\equiv \Omega_r/\Omega_m\approx 3\times 10^{-4}$ 时，宇宙近似是冷物质主导的。为了更精确地体现辐射能量的修正，我们可以假设
+    $$ G = \frac{D}{a} \approx 1 + c\frac{a_{\rm eq}}{a}$$
+    这里的 $c$ 是待定常数。记 $\epsilon = c\frac{a_{\rm eq}}{a} \ll 1$，容易看出
+    $$ dG/dN = -\epsilon, \ d^2G/dN^2 = \epsilon$$
+    代入结构增长方程可以确定出 $\epsilon$。这样就有了足够精确的初始条件。
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{最简单的公式，给最懒的你}
+    对{\blue 平坦的 $\Lambda$CDM 模型}，你还可以在{\blue $z\lesssim 100$ 处}直接使用下列近似公式：
+    $$ D(z) \approx \frac{\sqrt{\Omega_m(1+z)^3+1-\Omega_m}}{(1+z)^{1/4}}\left[\frac{10+\Omega_m}{11\Omega_m(1+z)^3+10(1-\Omega_m)}\right]^{3/4}$$
+    $$ f(z) \approx \left(\frac{\Omega_m(1+z)^3}{\Omega_m(1+z)^3+1-\Omega_m }\right)^{0.55}$$
+  \end{frame}
+
+  \section{Limitations}
+  \secpage{$D(z)$ 的局限性}{不包含其他成分影响，只描述中等尺度}
+
+
+  \begin{frame}
+    \frametitle{暗物质(dark matter)和重子物质(baryonic matter)}
+    我们在之前的处理过程中，把冷暗物质(cold dark matter)和重子(baryon，实际上宇宙学中指H, He, Li, Be, B, C\ldots 原子或它们的电离形式)都当成压强可以忽略的冷物质。
+    $$\Omega_m = \Omega_b + \Omega_c$$
+    这里的 $\Omega_m\approx 0.3$，重子的 $\Omega_b \approx 0.05$ （目前的重子密度$\rho_b$ 和临界密度 $\frac{3H_0^2}{8\pi G}$ 之比），冷暗物质 $\Omega_c \approx 0.25$ （目前的冷暗物质密度$\rho_c$ 和临界密度 $\frac{3H_0^2}{8\pi G}$ 之比）。
+
+    \skipline
+    
+    由于重子物质占的比例不低，前面讨论的结构线性增长的图像{\blue 在红移 $z>1000$ 有很大误差}，因为那时重子和光子有频繁的相互作用。即使在低红移，中微子（如果它比较重）、暗能量（如果它不是宇宙学常数的话）等都可能存在轻微的结团，贡献一部分引力势，从而对暗物质结团造成影响。
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{大尺度的规范选择问题}
+    在接近 $H^{-1}$ 量级的很大尺度上，实际上连 $\delta$ 的定义都是不够明确的。这是因为宇宙并没有一个严格的全局时钟，我们可以在四维时空中选取稍稍不同的三维切片作为 $t$ 时刻的世界。这样也会引起各处 $\delta$ 变化。这叫做 $\delta$ 的规范依赖性。
+
+    \addfig{2}{guifan.jpg}
+
+    所以在很大尺度上讨论 $\delta$ 需要规定取何种规范（怎么取三维切片作为 $t$ 时刻的世界），显然之前讨论的线性结构增长方程就不能普遍适用了——我们后面会用复杂亿点点的广义相对论结构增长方程来研究这个问题。
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{小尺度的非线性结构形成}
+    当 $\delta$ 接近 $O(1)$ 的量级，线性微扰的理论无法正确描述实际的物理过程。在红移零处，大约 $10\mathrm{Mpc}$ 以下的结构就完全无法用线性理论来描述了。此外，在更小的星系尺度，重子物质的压强也变得不可忽略（即它在这个尺度而言并非是冷物质），计算更加复杂了——甚至可以涉及很多化学知识（投降）。
+
+    \addfig{1.5}{zhixi.jpg}
+    
+    总结起来，冷物质的线性结构增长方程只能描述红移 $1000$ 以下， 大约从 $10\mathrm{Mpc}$ 到 $10^3\mathrm{Mpc}$ 的尺度范围的宇宙密度扰动。宇宙大尺度结构的绝大部分前沿研究都聚焦在如何更准确地描述非线性的密度扰动，这是你们在后半部分课程会接触到的内容。
+
+  \end{frame}
+  
+    \ech
+\end{document}
+
+
+
+
+  

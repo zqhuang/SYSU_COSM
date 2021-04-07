@@ -1,0 +1,560 @@
+\documentclass[CJK,13pt]{beamer}
+\input{macros.tex}
+\input{titlepage.tex}
+  \date{}
+  \begin{document}
+  \bch
+  \tpage{9}{Linear Perturbation Theory I}
+
+  \section{Plan}
+
+  \secpage{小目标}{\addfig{1}{xiaomubiao.jpg}}
+  
+  \begin{frame}
+
+    \frametitle{颇具野心的计划}
+    我们前面已经介绍了如何用结构增长方程描述“冷物质密度扰动” 。但实际上宇宙中除了冷物质之外，至少还有光子、中微子这些成分存在非均匀性。另外，时空度规的非均匀性具有6个物理自由度，并不能简单地用一个牛顿引力势来描述。
+
+
+    \skipline
+
+    所以，一个颇具野心的计划是建立一套完整的方程组，描述所有成分以及时空度规的非均匀性（宇宙学微扰）。
+
+    \skipline
+    
+    但是作为一名\sout{毕不了业的}对现实世界有深刻认识的 研究僧，你肯定猜得到这件事已经有人做了——
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{完成了上述计划的代码： CAMB 和 CLASS}
+    CAMB 和 CLASS 是两个与时俱进的、求解宇宙学微扰的代码。
+
+    \skipline
+
+    所谓与时俱进，就是为了追求速度、精度以及通用性，这两个代码都被打造得极为精致复杂，以至于 ——
+
+    \addfig{0.9}{haogaoji.jpg}
+
+    {\bf\large 你不太可能看得懂。}
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{代码到底复杂在哪里？}
+    \bitem
+  \item{在欧式空间通常用Fourier变换来研究线性系统；但当 $\Omega_k\ne 0$ 时，要改为 \&￥\#*\%\# 变换 （此处省略一万行特殊函数的定义以及数值算法）。}
+  \item{度规的非均匀性很复杂，有由于可以任意人为选取坐标系带来的4个“规范自由度”，还有牛顿引力势（1个自由度）、曲率势（1个自由度）、无源矢量场扰动（2个自由度）、引力波（2个自由度）。}
+  \item{光子和重子在recombination之前处于强耦合状态，描述它们演化的方程数值上非常不稳（其实是秒崩）。因此需要换一个近似但是稳定的算法。为了提高计算精度，近似算法被搞得有亿点点复杂。}    
+  \item{光子在晚期宇宙占的比重较低，因此可以采用各种近似手段来提升计算速度。}
+  \item{中微子在晚期宇宙变得非相对论性，动力学相对较复杂。}
+    \eitem
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{小目标}
+    我们的小目标是写一个看得懂的代码来计算宇宙学微扰。为此，我们需要把上述各种复杂情形尽可能地简化。具体方案如下：
+
+    \addfig{1}{xiaomubiao.jpg}
+    
+    \bitem
+  \item{令 $\Omega_k=0$（解决不了问题，就解决提出问题的…）}
+  \item{只考虑牛顿引力势和曲率势两种标量度规扰动。}    
+  \item{把中微子当成无质量粒子。}    
+  \item{放弃对精度和计算速度的极致追求。}
+    \eitem
+
+    \notes{引力波的演化和中微子质量的影响其实都是重要的问题，在 CAMB 和 CLASS 里都会被认真地处理。不过我们在“最简版本”里将忽略这些。}
+    
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{小目标的check list (七个微目标)}
+    \bitem
+  \item[1]{给出度规微扰的数学描述(难度系数 $\star\star$)}
+  \item[2]{计算爱因斯坦张量(难度系数 $\star\star\star\star$)}
+  \item[3]{计算各种成分的能量动量张量(难度系数 $\star\star\star$)}    
+  \item[4]{写出CDM的密度扰动和速度散度的运动方程(难度系数 $\star$)}
+  \item[5]{写出baryon的密度扰动和速度散度的运动方程(难度系数 $\star\star$)}        
+  \item[6]{写出massless neutrino分布函数的扰动的玻尔兹曼方程(难度系数 $\star\star\star\star\star$)}
+  \item[7]{写出photon的动量和极化的分布函数的扰动的玻尔兹曼方程(难度系数 $\star\star\star\star\star\star\star\star\star\star$)}    
+    \eitem
+  \end{frame}
+
+
+ \begin{frame}
+   \frametitle{宇宙学微扰论里的Fourier变换}
+    一阶微扰论所有方程是线性的，可以用Fourier变换把偏微分方程转化为常微分方程组。因此在接下来的讨论里，所有依赖于 $\vec{x} \equiv (x^1,x^2,x^3)$ 的量都会被傅立叶变换到对偶的 $\vec{k}\equiv (k_1, k_2, k_3)$ 空间（傅立叶空间）。
+    例如傅立叶空间中牛顿引力势的定义为：
+    $$\Phi(\tau, \vec{k})\equiv \frac{1}{(2\pi)^3}\iiint \Phi(\tau, \vec{x}) e^{-i\vec{k}\cdot\vec{x}}d^3\vec{x}$$
+    请不要介意方程左右两边都使用了 $\Phi$ 符号，你根据参量是 $\vec{k}$ 还是 $\vec{x}$ 就可以判断具体是在哪个空间的表述。
+
+    \skipline
+
+    Fourier逆变换为
+    $$\Phi(\tau, \vec{x}) = \iiint \Phi(\tau, \vec{k}) e^{i\vec{k}\cdot\vec{x}}d^3\vec{k}$$
+
+    \notes{注意这里的 $\vec{k}\cdot\vec{x}$ 就是数学形式上的欧式空间内积，不涉及度规啥的。}
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{归一化的 $\hat{k}$}
+    我们经常要使用长度归一化的波矢
+    {\blue $$\hat{k}\equiv \frac{\vec{k}}{k}$$}
+    这里的 $k = \lvert\vec{k}\rvert$ 是 $\vec{k}$ 的大小。
+
+    \skiplines
+    
+    \notes{$k = \lvert\vec{k}\rvert$ 和 FRW 度规里的空间曲率参数 $k$ 符号相同。在本讲中，我们总是假设空间曲率为零，并不会混淆。但一般情况下，要根据上下文判断 $k$ 是什么意思。}
+  \end{frame}
+
+  
+  \section{Metric}
+  \secpage{微目标1}{度规扰动}
+  
+  \begin{frame}
+      \frametitle{共形时间（conformal time) }
+        为了和大多数文献和代码保持一致，在讨论宇宙学微扰时我们将采用共形时间 $\tau$，它的定义为：
+        $$ \tau \equiv \int_0^t \frac{dt'}{a(t')}.$$
+        老规矩，目前的共形时间记作 $\tau_0$。
+
+
+        \skipline
+
+        根据定义， $d\tau = \frac{dt}{a}$，也就是 $dt = a d\tau$，所以 FRW 度规可以写成
+        $$ ds^2 = a^2\left[d\tau^2 - \frac{dr^2}{1-kr^2} - r^2\left(d\theta^2+\sin^2\theta\,d\phi^2\right)\right],$$
+        这里我们重新把 $a$ 看成是 $\tau$ 的函数。
+
+        \skipline
+
+        {\blue 我们把对 $\tau$ 的导数用 $'$ 来表示，例如 $a' \equiv \frac{da}{d\tau}$。共形哈勃参量则定义为
+        $\mathcal{H} \equiv \frac{a'}{a} = \dot a = aH$。}
+  \end{frame}
+
+
+
+    \begin{frame}
+      \frametitle{$\Omega_k=0$ 情况的直角坐标写法}
+      按照计划，我们只讨论 $k=0$ 的情况。这时可以把共动坐标 $(r,\theta,\phi)$ 写成直角坐标 $ (x^1, x^2, x^3)$ 的形式：
+      $$ ds^2 = a^2\left(d\tau^2-\delta_{ij}dx^i dx^j\right)$$
+      这里的尺度因子 $a$ 只依赖于 $\tau$。按照宇宙学通常的习惯，拉丁字母 $i, j$ 只对空间指标 $1,2,3$ 求和。
+  \end{frame}
+
+
+   \begin{frame}
+      \frametitle{($\Omega_k=0$情况) 度规的最一般微扰}
+      度规的十个成分的最一般微扰可以写成：
+      $$ ds^2 = a^2\left[(1+2\Phi)d\tau^2+ 2B_id\tau dx^i - \left(\delta_{ij}+H_{ij}\right)dx^i dx^j\right]$$
+      这里 $H_{ij}=H_{ji}$ 对应 6 个自由度， $B_i$ 对应 3 个自由度，$\Phi$ 对应 1 个自由度——它们都是依赖于时空坐标 $(\tau, x^1,x^2,x^3)$ 的函数。
+
+      \skipline
+
+      然后我们{\blue 按照固定时间的三维空间切片里的张量类型}进行分类：
+      \bitem
+      \item{$\Phi$ 是个标量；}
+
+        \item{$B_i$ 可以分解为标量 $C$ 和横向矢量 $D_i$（即满足 $\partial^iD_i=0$ 的无源矢量）的组合
+          $$ B_i = \partial_i C +  D_i$$}
+          \eitem
+
+      \notes{这里的修饰语“横向”指做了傅立叶变换后， $D$ 矢量和波矢 $\veck$ 垂直。标量 $C$ 为一个自由度，横向矢量(因为加了 $\partial^iD_i=0$ 的限制)只有2个自由度，加起来还是3个自由度。}
+      
+  \end{frame}
+
+   \begin{frame}
+      \frametitle{($\Omega_k=0$情况) 度规的最一般微扰}
+      \bitem
+    \item{$H_{ij}$ 可以分解为两个标量 $\Psi$ 和 $E$，一个横向矢量 $A_i$，和一个横向无迹的二阶对称张量（引力波） $h_{ij}$。
+      $$ H_{ij} = -2\Psi \delta_{ij} + \left(\partial_i\partial_j - \frac{1}{3}\delta_{ij}\right)E + (\partial_iA_j + \partial_j A_i) + h_{ij}$$
+      这里横向矢量  $A_i$ 满足 $\partial^iA_i=0$，横向无迹的对称张量 $h_{ij}$ 满足 $\partial^ih_{ij} = 0$ 以及 $h^i_{\, i} = 0$。
+
+
+      \skiplines
+
+      \notes{注意这里的指标升降都是在固定时间的切片内（三维欧式空间）进行，也就是说指标在上在下其实是一样的。\\
+       $h_{ij}$ 因为满足三个横向条件 $\partial^ih_{ij}=0$ 以及一个无迹条件 $h^i_{\, i}=0$，自由度是 $6-3-1=2$ 个，对应引力波的两种极化。}
+
+    }
+      \eitem
+  \end{frame}
+   
+
+  
+  \begin{frame}
+    \frametitle{去掉规范自由度}
+    我们可以在四维时空里面取四个很小的函数 $\epsilon^\mu(\tau, x^1, x^2, x^3)$ ($\mu=0,1,2,3$)，然后定义：
+    $$\tilde{\tau} \equiv \tau + \epsilon^0(\tau, x^1, x^2, x^3).$$
+    $$\tilde{x^i} \equiv x^i + \epsilon^i(\tau, x^1, x^2, x^3).$$
+    如果我们重新定义坐标系，在原先坐标为 $(\tau, x^1, x^2, x^3)$ 的物理点，都用新的坐标 $(\tilde{\tau}, \tilde{x^1}, \tilde{x^2}, \tilde{x^3})$ 来标记。相应的度规里就会多出由 $\epsilon^0$ （标量）和 $\epsilon^i$ （标量+横向矢量）产生的成分。所以度规里的两个标量和一个横向矢量——总计4个自由度是由坐标系选取产生的“规范自由度”（非物理自由度）。
+
+
+    \notes{请再次注意我们这里讨论的标量、矢量都是指（固定时间的）三维空间内的张量类型——并且只是在一阶近似意义下的。也就是说，你无须弄清到底固定时间指的是固定 $\tau$ 还是固定 $\tilde{\tau}$。}
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{牛顿规范 (Newtonian Gauge)}
+    按照计划，我们要取数学公式相对简单的“牛顿规范”（也有叫Poisson规范的）。具体来说，我们取合适的 $\epsilon^\mu$ 抵消掉两个标量 $C$、 $E$ 和一个横向矢量  $D$，得到
+    {\small  $$ ds^2 = a^2\left\{\left(1+2\Phi\right)d\tau^2 - \left[\left(1-2\Psi\right)\delta_{ij}+ \partial_iA_j+\partial_jA_i + h_{ij}\right]dx^idx^j\right\}$$}
+    至于  $\epsilon^\mu$ 具体该满足什么条件，推导并不复杂，也和接下去的计算毫无关系，就不详细给出了。
+
+    \skipline
+    
+    \notes{一种更加流行（例如CAMB数值计算采用）的规范是同步规范(synchronous gauge)：取合适的 $\epsilon^\mu$ 抵消掉两个标量 $\Phi$、$C$ 和一个横向矢量 $D$，得到
+      $$ ds^2=dt^2 - (\delta_{ij}+H_{ij}) dx^idx^j .$$ 同步规范相当于在每个“固定的物理点”放上时钟来计时为 $t$，这样就还有如何选择“固定的物理点”的问题。在CAMB里采用的是取CDM流体元不动的物理点的方法(CDM comoving synchronous gauge)。}
+    
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{忽略矢量和引力波成分}
+    按照计划，在牛顿规范中忽略矢量成分和引力波成分
+      {\blue $$ ds^2 = a^2\left[\left(1+2\Phi\right)d\tau^2 - \left(1-2\Psi\right)\delta_{ij}dx^idx^j\right]$$}
+      这里的 $\Phi$ 对应牛顿引力势，$\Psi$ 叫做曲率势——它描述局域的空间曲率扰动。
+
+      \skipline
+
+      {\blue 微扰 $\Phi,\Psi$ 都是小量，我们在计算中，总是仅保留到它们的一阶。}另外，$\Phi$ 对应牛顿引力势是广义相对论里熟知的结论，这里就不给出推导了。
+
+      \skipline
+      
+      \notes{如果你要专门研究如何测量原初引力波，就不能忽略 $h_{ij}$，这样其实也不会导致问题复杂多少。不过为了保证小目标尽可能精简，就不展开讨论了。}
+  \end{frame}
+
+  \section{Einstein Tensor}
+  \secpage{微目标2}{爱因斯坦张量}
+
+  \begin{frame}
+    \frametitle{代码}
+    对牛顿规范的度规
+      {\blue $$ ds^2 = a^2\left[\left(1+2\Phi\right)d\tau^2 - \left(1-2\Psi\right)\delta_{ij}dx^idx^j\right]$$}    
+      用代码
+    \url{http://zhiqihuang.top/cosm/codes/NewtonianGauge.py}
+    可以计算出connection, Ricci scalar, 和 Einstein tensor（均保留到一阶小量）。
+
+    \skipline
+
+    结果如下（灰色为零阶项，黑色为一阶项；一撇表示对 $\tau$ 求导， $\mathcal{H}\equiv\frac{a'}{a}$， $\partial_i\equiv \frac{\partial}{\partial x^i}$， $\nabla^2\equiv \sum_{i=1}^3 \partial_i^2$）：
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{联络}
+     \begin{eqnarray}
+\Gamma^{0}_{00} &=&{\gray \mathcal{H} + } \Phi',   \\
+\Gamma^{0}_{i0} &=&  {\partial_i} \Phi,   \\
+\Gamma^{i}_{00} &=&  {\partial_i} \Phi,   \\
+\Gamma^{0}_{ii} &=& {\gray \mathcal{H} }- 2 \mathcal{H}(\Phi +\Psi) - \Psi'  ,\ \text{($i$ not summed)} \\
+\Gamma^{i}_{i0} &=& {\gray \mathcal{H} }  -  \Psi' ,\ \text{($i$ not summed)} \\
+\Gamma^{i}_{ii} &=& -  {\partial_i} \Psi ,\ \text{($i$ not summed)} \\
+\Gamma^{i}_{ji} &=& -  {\partial_j} \Psi ,\ \text{($i$ not summed)} \\
+\Gamma^{j}_{ii} &=&  {\partial_j} \Psi  ,\ \text{($i$ not summed)} 
+\end{eqnarray}
+  \end{frame}
+  
+  \begin{frame}
+    \frametitle{Ricci 标量}
+    \begin{eqnarray}
+      R &=& {\gray - \frac{6 {a''}}{a^3 }} \nonumber \\
+      && + \frac{12 \Phi  {a''}}{a^3 } + \frac{2 \nabla^2 \Phi }{a^2 } + \frac{6 \mathcal{H} \Phi' }{a^2 } \nonumber \\
+      && + \frac{6\Psi'' }{a^2 } - \frac{4 \nabla^2 \Psi }{a^2 }  + \frac{18\mathcal{H}  \Psi'  }{a^2 }
+      \end{eqnarray}
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{Einstein 张量}
+ \begin{eqnarray}
+G^{0}_{\ 0} &=& {\gray \frac{3\mathcal{H}^2}{a^2 }} - \frac{6 \mathcal{H}^2  \Phi }{a^2 } + \frac{2 \nabla^2\Psi }{a^2 }  - \frac{6\mathcal{H}\Psi'}{a^2 } \\
+G^{0}_{\ i} &=& - G^i_{\ 0} = \frac{2\mathcal{H}  {\partial_i} \Phi   }{a^2 } + \frac{2  {\partial_{i}} \Psi' }{a^2 }  \\
+G^{i}_{\ i} &=& {\gray - \frac{\mathcal{H}^2}{a^2} + \frac{2 a''}{a^3 } } \nonumber \\
+&& + \left(\frac{2\mathcal{H}^2}{a^2}- \frac{4 a''}{a^3 } \right)\Phi - \frac{2\mathcal{H} \Phi'}{a^2} - \frac{2 \Psi''}{a^2 }- \frac{4\mathcal{H}\Psi'}{a^2 } \nonumber \\
+&&  + \frac{(\partial_i^2-\nabla^2) (\Phi-\Psi) }{a^2 } ,\ \text{($i$ not summed)} \\
+G^{i}_{\ j} &=& G^{j}_{\ i} = G^{ij} =  \frac{ {\partial_i\partial_j} (\Phi-\Psi) }{a^2 } , \ (i\ne j)  \label{eq:shear}
+ \end{eqnarray}
+\end{frame}
+
+  \begin{frame}
+    \frametitle{傅立叶空间的 Einstein 张量 (重复指标求和）}
+ \begin{eqnarray}
+G^{0}_{\ 0} &=& {\gray \frac{3\mathcal{H}^2}{a^2 }} - \frac{6 \Phi  \mathcal{H}^2}{a^2 } - \frac{2k^2\Psi }{a^2 }  - \frac{6\mathcal{H}\Psi'}{a^2 } \\
+\ii\hat{k}_i G^{i}_{0} &=&  \frac{2 k \mathcal{H} }{a^2 }\Phi + \frac{2 k \Psi' }{a^2 }  \\
+G^{i}_{\ i} &=&  {\gray - \frac{3\mathcal{H}^2}{a^2} + \frac{6 {a''}}{a^3 } } \nonumber \\
+&&  + \left(\frac{2\mathcal{H}^2}{a^2 }- \frac{4 {a''}}{a^3 } \right)\Phi - \frac{6\mathcal{H} \Phi'}{a^2 } - \frac{6 \Psi'' }{a^2 }- \frac{12\mathcal{H} \Psi'}{a^2 } \nonumber \\
+&&  + \frac{2k^2 (\Phi-\Psi) }{a^2 } , \\
+ -\hat{k}_i\hat{k}_j\Sigma^{ij} &=&  \frac{k^2(\Phi-\Psi)}{a^2 } ,
+ \end{eqnarray}
+ 其中 $\Sigma^{ij}$ 当 $i\ne j$ 时定义为 $G^{ij}$，否则定义为零。
+  \end{frame}
+
+  \section{Energy-momentum Tensor}
+  \secpage{微目标3}{能量动量张量}
+
+   \begin{frame}
+    \frametitle{暗物质和重子：理想流体近似}
+    在我们感兴趣的红移范围，暗物质和重子的典型的热动能相比于它们的静止质量有亿点点低。 所以我们几乎可以忽略这些家伙在小范围内来回乱蹿的行为，只研究它们的集体（专业名词叫流体元）的行为。
+
+    \bcenter
+    \tfig{0.8}{chicken_slow.jpg}    \tfig{0.8}{chicken_fast.jpg}
+    \ecenter
+
+  \end{frame}
+
+
+   \begin{frame}
+     \frametitle{理想流体的能量动量}
+     广义相对论中有个熟知的结论: 理想流体的能量动量张量是
+     \tbox{$$T^\mu_{\ \nu} = (\rho+p)u^\mu u_\nu - pg^\mu_\nu$$}
+     这里 $\rho, p$ 是和流体元共动的观测者看到的流体能量密度和压强，$u^\mu$ 是流体元的四维速度。
+   \end{frame}
+
+
+  \begin{frame}
+    \frametitle{密度扰动 $\delta$}
+    我们用 $\delta$ 表示理想流体的相对密度扰动，即
+
+    {\blue $$\delta\equiv \frac{\rho - \bar{\rho}}{\bar{\rho}}$$}
+
+    这里的 $\bar{\rho}$ 是“背景密度”（或理解为宇宙平均能量密度；CDM和重子的 $\bar{\rho}$ 都和 $a^{-3}$ 成正比）。$\rho$ 是和流体元共动的观测者测量到的流体能量密度。
+
+
+    \notes{注意这里的 $\rho$ 是和流体元共动的观测者看到的密度；我们之前讨论冷物质的结构增长方程时定义的密度是相对于坐标系静止（即 $\vec{x}$ 不变）的参考者看到的密度。对冷物质而言，非相对论速度贡献的动能是二阶小量，因此两者在线性近似的意义上是相同的。}
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{坐标速度的归一化散度（简称速度散度）}
+    我们把流体元的三维坐标速度记为 $\vec{u} = \frac{d\vec{x}}{d\tau}$ （在一阶近似意义下，这实际上是刨去宇宙膨胀后的“物理速度”）。
+
+    坐标速度 $\vec{u}$ 在傅立叶空间的归一化散度记为
+    {\blue $$\upsilon  \equiv i\hat{k} \cdot \vec{u}$$}
+     因为要用 $\hat{k}$ 的缘故，$\upsilon$ 只能在傅立叶空间定义。
+
+  \end{frame}
+
+
+    \begin{frame}
+    \frametitle{理想流体的 $T^\mu_{\ \nu}$}
+    \bitem
+    \item{流体的共动参考系密度  $\rho = \bar{\rho}(1+\delta)$；}
+    \item{ 流体元四维速度的一阶近似为 $u^\mu = \frac{1}{a} (1-\Phi, \vec{u})$ 或者 等价地 $u_\mu = a(1+\Phi, -\vec{u})$。}
+    \item{设流体的“背景状态方程”为 $w$，在共动参考系的声速平方为 $c_s^2 = \frac{p-\bar{p}}{\rho-\bar{\rho}}=\frac{p-w\bar{\rho}}{\delta \bar{\rho}}$。即共动参考系流体的压强 $p  = (w + c_s^2\delta)\bar{\rho}$。}
+      \eitem
+      于是根据流体的能量动量张量公式，有
+     
+  \end{frame}
+  
+  \begin{frame}
+    \frametitle{理想流体的  $T^\mu_{\ \nu}$（续）}
+    \begin{eqnarray}
+      T^0_{\ 0} &=& {\gray \bar{\rho}} + \bar{\rho}\delta, \\
+      T^0_{\ i} &=& - T^i_{\ 0} = -(1+w)\bar{\rho}u^i,  \\
+      T^i_{\ i} &=&  {\gray -w\bar{\rho}} - c_s^2\bar{\rho}\delta  ,\ \text{($i$ not summed)} \\
+      T^i_{\ j} &=& 0.\ (i\ne j) \label{eq:Tshear}
+    \end{eqnarray}
+    比较方程 \eqref{eq:shear} 和 \eqref{eq:Tshear}，我们可以从爱因斯坦方程推出一个很有用的结论：{\blue 如果宇宙中仅含有理想流体，那么在线性微扰的近似下，牛顿引力势和曲率势相等 ($\Phi = \Psi$)。} 实际上，在CDM和重子主导的晚期宇宙，情况的确如此。（等等，宇宙学常数会搞破坏吗？其实并不会，因为宇宙学常数可以看成密度和压强严格均匀的无扰动理想流体。）
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{中微子对 anisotropic shear 的贡献}
+    中微子这种可以长距离滑翔的家伙肯定就不能当成理想流体了。事实上，中微子的 $T^i_{\ j}$ ($i\ne j$) 确实明显地非零。
+
+    \skipline
+
+    
+    在早期宇宙还有大量的自由电子的时候，光子和电子的碰撞足够频繁，光子的平均自由程足够短，就可以把一堆光子的杂乱无章的“内部无规则运动”忽略掉，把光子和重子当成耦合在一起的理想流体（photon-baryon fluid)。虽然在氢的recombination完成之后，光子也可以像中微子那样长途滑翔，不再是理想流体，但是这时候光子占宇宙总能量密度的比重已经不大了。所以光子对宇宙的 $T^i_{\ j}$ ($i\ne j$) 的贡献始终不大。
+
+      \skipline
+
+      结论就是：{\blue 线性微扰的非零  $T^i_{\ j}$ ($i\ne j$) (它叫 anisotropic shear，中文也许可能叫“各向异性剪切”……吧？)，或者说导致 $\Phi\ne\Psi$ 的原因，主要来源于中微子。}
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{描述中微子的数学工具}
+    中微子要用相空间的分布函数 $f(\tau, x^1, x^2, x^3, P_1, P_2, P_3)$ 来描述。这里的 $P_\mu$ 是粒子四维动量的协变形式（这里只用到它的空间分量 $P_i$)。$f$ 的物理意义是六维的相空间 $(x^1,x^2,x^3, P_1, P_2, P_3)$内粒子数密度（因为它随 $\tau$ 变化，所以其实是七元函数）。也就是说：
+      $$ f(\tau, x^1, x^2, x^3, P_1, P_2, P_3) dx^1dx^2dx^3dP_1dP_2dP_3$$
+      代表了 $\tau$ 时刻在相空间体积元内的粒子数。
+
+      \skipline
+
+      一个坐标系静止观测者（即 $x^1, x^2, x^3$ 坐标固定的观测者）的四维速度是 $u^\mu = a(1-\Phi, 0, 0, 0)$。时间标架是 $e^\mu_0 = u_\mu$。局域空间标架可以取为 $e^{\mu}_1 = a(0, 1+\Psi, 0, 0) $。坐标系静止观测者看到粒子的物理动量为 $p_i = p^i = (1+\Psi)P_i$. 
+  \end{frame}
+
+
+  
+\section{Radiation and Massless Neutrinos}
+
+\secpage{辐射和轻中微子}{\addfig{1}{woshangle.jpg}}
+
+  \begin{frame}
+    \frametitle{分布函数的零级近似}
+    在选定的坐标系里，设在给定位置 $\vec{x}$，坐标系共动观测者看到的粒子的物理动量为 $\vec{p}$，我们定义 $\vec{q} \equiv a\vec{p}$。
+
+    在严格的 FRW 坐标系里， 自由粒子的 $\vec{q}$ 是守恒的（见第6讲），所以在可以忽略碰撞的情况下下， $\vec{q}$ 的分布函数至少在零级近似下不会改变。
+
+    \skipline
+
+    对于光子或中微子，我们可以写出相空间分布函数的零级近似
+    $$ f_0 (q) = \equiv \frac{g}{(2\pi)^3}\frac{1}{e^{\sqrt{q^2+m^2a^2}/T_0} \pm 1} . $$
+    这里 $q \equiv |\vec{q}|$。对中微子 $T_0 = 1.95\SIK$，对光子  $T_0 = 2.726\SIK$, $m=0$。
+
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{分布函数的微扰（从七元函数到四元函数）}
+    然后我们要考虑坐标系共动观测者看到的分布函数 $f(\tau, \vec{x}, \vec{q})$ 对 $f_0(q)$ 的偏离。 对 $\vec{x}$ 坐标进行傅立叶变换之后，分布函数可以写成：
+    $$ f(\tau,\vec{k}, \vec{q}) = f_0(q) + \delta f (\tau, \vec{k},\vec{q}) $$
+    对，你没看错，我们关注的是一个七元函数 $\delta f (\tau, \vec{k}, \vec{q})$。不过根据对称性，$\delta f$ 的线性演化只和 $\vec{q}$ 和 $\vec{k}$ 的夹角，以及矢量大小 $k$, $q$ 有关。所以其实我们要演化的是
+    $$ \delta f(\tau, k, q, \mu) $$
+    这里的 $\mu = \frac{\vec{k}\cdot\vec{q}}{kq}$ 是 $\vec{k}$ 和 $\vec{q}$ 夹角的余弦。
+
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{极端相对论情况：从四元函数到三元函数}
+    对极端相对论粒子，由于其能量动量张量的一阶微扰只涉及到如下形式的积分：
+    $$\int \delta f (\tau, k, q, \mu) q^3 dq $$
+    所以我们定义{\blue 对$q$积分后的分布函数微扰}：
+    $$ F(\tau, k, \mu) \equiv \frac{\int \delta f (\tau, k, q, \mu) q^3 dq}{\int f_0(q) q^3 dq} $$
+  \end{frame}
+
+
+    \begin{frame}
+      \frametitle{Legendre多项式展开：从三元函数到一堆二元函数}
+      最后，我们把 $F(\tau, k, \mu)$ 进行Legendre多项式展开：
+      $$ F(\tau, k, \mu) = \sum_{\ell=0}^\infty (-i)^\ell (2\ell+1) F_\ell(\tau, k) P_\ell(\mu) $$
+      这样，我们最后需要演化的就是一系列只依赖于 $k, \tau$ 的函数： $F_0, F_1, \ldots$。
+
+      \skipline
+      
+      把光子和中微子（忽略质量）的对应的 $F_\ell$  都加入到变量清单里，就得到
+    \end{frame}
+
+    
+    \begin{frame}
+    \frametitle{最后的清单}
+    \begin{tabular}{ll}
+    度规 & $\Phi(\tau, k), \Psi(\tau, k)$ \\
+    暗物质 & $\delta_c(\tau, k), \upsilon_c(\tau, k)$ \\
+    重子 & $\delta_b(\tau, k), \upsilon_b(\tau, k)$ \\
+    光子 & $F_{\gamma 0}(\tau, k), F_{\gamma 1}(\tau, k), F_{\gamma 2}(\tau, k), \ldots $ \\
+    中微子(忽略质量) & $F_{\nu 0}(\tau, k), F_{\nu 1}(\tau, k), F_{\nu 2}(\tau, k), \ldots $
+    \end{tabular}
+    \end{frame}
+
+    \section{Perturbation Equations}
+
+    \secpage{宇宙学微扰方程}{怕了的话可以直接跳过看答案}
+
+    \begin{frame}
+      \frametitle{暗物质密度扰动 $\delta_c$ 的演化方程}
+      注意曲率势使得单位共动体积对应的物理体积变成了 $a^3(1-3\Psi)$，欧拉连续性方程成为：
+      $$\frac{d\left(\bar{\rho}_c(1+\delta_c)(1-3\Psi)a^3\right)}{d\tau} + \nabla\cdot\left[\bar{\rho}_c(1+\delta_c)(1-3\Psi)a^3 \vec{u}_c\right] = 0.$$
+      注意 $\bar{\rho}_c a^3$ 是常数，以及 $\vec{u}_c = \frac{d\vec{x}}{d\tau}$ 是小量，上式保留一阶近似为
+      $$ \frac{d\delta_c}{d\tau} - 3\frac{d\Psi}{d\tau} + \nabla\cdot \vec{u}_c = 0 $$
+      转化到傅立叶空间，并利用定义 $\upsilon_c\equiv i\frac{\vec{k}}{k}\cdot\vec{u}_c$，即得到
+      {\blue      $$ \frac{d\delta_c}{d\tau} = 3\frac{d\Psi}{d\tau} - k\upsilon_c $$}
+      和第7讲忽略度规扰动的方程相比，方程右边的 $3\frac{d\Psi}{d\tau}$ 是在牛顿规范下的相对论修正。在较小尺度上，由于要考虑的 $k$ 都很大，可以忽略这个修正。
+    \end{frame}
+    
+
+    \begin{frame}
+      \frametitle{暗物质速度归一化散度 $\upsilon_c$ 的演化方程}
+      第7讲的冷物质速度演化方程
+      $$\frac{d\left[a^2\frac{d\vec{x}}{dt}\right]}{dt} = -\nabla\Phi$$
+      可以直接使用（因为已经包含度规扰动 $\Phi$ 了。作替换 $d\tau = \frac{dt}{a}$ 之后，方程是：
+        $$\frac{1}{a}\frac{d\left[a\vec{u}_c\right]}{d\tau} = -\nabla\Phi$$
+        两边左点乘 $\nabla$ 得到
+        $$\frac{1}{a}\frac{d(a\nabla\cdot \vec{u}_c)}{d\tau} = -\nabla^2\Phi $$
+        最后转化到傅立叶空间
+        {\blue $$ \frac{d\upsilon_c}{d\tau} = -aH\upsilon_c  + k \Phi $$}       
+    \end{frame}
+
+    \begin{frame}
+      \frametitle{重子密度扰动 $\delta_b$ 的演化方程}
+      虽然电子会和光子碰撞，但局域碰撞不影响描述物质守恒的欧拉方程。 如果忽略压强，重子的密度扰动和暗物质密度扰动满足一样的方程：
+      {\blue      $$ \frac{d\delta_b}{d\tau} = 3\frac{d\Psi}{d\tau} - k\upsilon_b $$}
+      在CAMB中，实际还引入了重子声速的计算，并对重子压强产生的效应做了修正。不过这是非常小的效应，在我们最简版本里暂不讨论。
+    \end{frame}
+    
+
+    
+    \begin{frame}
+      \frametitle{重子速度归一化散度 $\upsilon_b$ 的演化方程}
+      重子的动量演化要考虑到电子和光子的碰撞 （电子和原子核之间的库仑作用使得电子的动量可以有效传递给所有重子成分）。在相对论情形，流体元的动量密度为 $(\rho+p)\vec{u}$。 从重子参考系看，所有光子都发生单次Thomson散射时，传递给重子的净动量密度为
+      $$\sum P_{\gamma\rightarrow b} = \frac{4}{3}\rho_{\gamma}\left(\vec{u}_\gamma-\vec{u}_b\right)$$     
+      乘以每个光子被散射的平均次数 $n_e\sigma_Tcdt = an_e\sigma_T c d\tau$，再除以$\rho_b$转化为了流体加速度：
+      $$\frac{d\vec{u}_b}{d\tau} = \ldots + \frac{4\rho_{\gamma}}{3\rho_b}an_e\sigma_Tc\left(\vec{u}_\gamma-\vec{u}_b\right) $$
+      然后变换到傅立叶空间，取归一化散度把 $\vec{u}_b$ 转化为 $\upsilon_b$：
+      {\blue $$ \frac{d\upsilon_b}{d\tau} = -aH\upsilon_b  + k \Phi + \frac{4\rho_{\gamma}}{3\rho_b} an_e\sigma_Tc \left(\upsilon_\gamma-\upsilon_b\right)$$}
+    \end{frame}
+
+    
+    \begin{frame}
+      \frametitle{中微子的玻尔兹曼方程}
+      碰撞可以忽略的中微子要用完整的玻尔兹曼方程描述 $f(\tau, \vec{x}, \vec{q})$ 的演化：
+      $$\frac{\partial f}{\partial \tau} + \frac{dx^i}{d\tau}\frac{\partial f}{\partial x^i} + \frac{d q}{d\tau} \frac{d f_0}{d q} = 0$$
+      注意最后一项里我们只保留了 $\frac{d f_0}{d q}$ 的贡献，而未考虑完整的 $\delta f$ 对 $\vec{q}$ 的偏导。这是因为 $\frac{d\vec{q}}{d\tau}$ 已经是一阶小量，和它相乘的因子里只要保留零阶项就行了。
+
+      同样的理由，由于 $\frac{\partial f}{\partial x^i}$ 是一阶小量，我们只要保留 $\frac{dx^i}{d\tau}$ 的一阶小量近似 $\frac{d\vec{x}}{d\tau} = a \frac{d\vec{x}}{dt} \approx \frac{\vec{q}/a}{\sqrt{(q/a)^2+m^2}}$。忽略中微子质量时， $\frac{d\vec{x}}{d\tau}\approx \frac{\vec{q}}{q}$。
+
+      \notes{注意玻尔兹曼方程里是单粒子的 $\frac{dx^i}{d\tau}$，和之前的理想流体近似里的流体元（多粒子平均）速度不一样。}
+    \end{frame}
+
+    \begin{frame}
+      \frametitle{中微子的玻尔兹曼方程（续）}
+      变换到傅立叶空间，利用 $\frac{\vec{q}}{q}\cdot\vec{k} = k\mu $，有
+      $$\frac{\partial \delta f}{\partial \tau} + ik\mu \delta f + \frac{d q}{d\tau} \frac{d f_0}{d q} = 0.$$
+      在微扰度规下写出测地线方程并转化到傅立叶空间，有 $ \frac{d\vec{q}}{d\tau} = q\left(\frac{d\Psi}{d\tau}-ik\mu\Phi\right)$，于是
+      $$\frac{\partial \delta f}{\partial \tau} + ik\mu \delta f +  q\left(\frac{d\Psi}{d\tau}-ik\mu\Phi\right) \frac{d f_0}{d q} = 0.$$      
+      两边对 $q^3dq$ 积分，并除以  $\int f_0(q)q^3dq$, 得到 $F(\tau, k, \mu)$ 的演化方程：
+      $$\frac{\partial F}{\partial \tau} + ik\mu F + \left(\frac{d\Psi}{d\tau}-ik\mu\Phi\right) \frac{\int q^4\frac{d f_0}{d q}dq}{\int q^3f_0dq} = 0.$$      
+    \end{frame}
+
+
+    \begin{frame}
+      \frametitle{中微子的玻尔兹曼方程（续）}
+      利用 $f_0(q) \propto \frac{1}{e^{\frac{q}{T_{CNB}}}+1}$，直接计算最后一项的积分，得到
+       $$\frac{\partial F}{\partial \tau} + ik\mu F + 4\left(ik\mu\Phi-\frac{d\Psi}{d\tau}\right) = 0.$$
+      代入Legendre多项式展开 $ F(\tau,k,\mu) =  \sum_{\ell=0}^\infty (-i)^\ell (2\ell+1) F_\ell(\tau, k) P_\ell(\mu) $，并利用递推公式
+      $\mu P_\ell(\mu) = \frac{\ell+1}{2\ell+1}P_{\ell +1}(\mu) + \frac{\ell}{2\ell+1}P_{\ell-1}(\mu)$，得到：
+       $$ \left[(2\ell+1)\frac{\partial F_\ell}{\partial \tau} - k\ell F_{\ell-1} + k (\ell+1) F_{\ell+1}\right]   -  4 k\Phi \delta_{\ell 1} -4\frac{d\Psi}{d\tau}\delta_{\ell 0} = 0.$$
+    \end{frame}
+
+
+    \begin{frame}
+      \frametitle{中微子的玻尔兹曼方程（续）}
+     对固定的 $k$ 而言，$F_\ell$ 就只是 $\tau$ 的函数，所以我们把 $\frac{\partial F_\ell}{\partial \tau}$ 换成 $\frac{dF_\ell}{d\tau}$。最后，我们把所有下标都标注上 $\nu$ 以表示这是中微子的玻尔兹曼方程：
+     {\blue  \bea
+      \frac{d F_{\nu 0}}{d \tau} &=& kF_{\nu 1} + 4\frac{d\Psi}{d\tau} \newl
+      \frac{d F_{\nu 1}}{d \tau} &=& kF_{\nu 0}-\frac{k}{3}F_{\nu 2} + 4k\Phi \newl
+      \frac{d F_{\nu \ell}}{d\tau} &=& \frac{k}{2\ell+1}\left[\ell F_{\nu,\ell-1}-(\ell+1)F_{\nu, \ell+1}\right], \  \ell\ge 2
+      \eea
+      }
+    \end{frame}
+    
+    
+    
+    \section{Boltzmann Code}
+
+    \secpage{玻尔兹曼代码}{到这还不秃的话可能你挺适合学宇宙学的}
+
+    \begin{frame}
+      \frametitle{数值计算}
+      对固定的 $k$，我们将调用解一阶 ODE 方程组的数值方法来演化前面列表中的各个变量（即它们如何随 $\tau$ 变化)。
+    \end{frame}
+
+
+    
+
+  
+  \ech
+\end{document}
+
+
+
+
+  

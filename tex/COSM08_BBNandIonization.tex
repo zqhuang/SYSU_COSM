@@ -1,0 +1,229 @@
+\documentclass[CJK,13pt]{beamer}
+\input{macros.tex}
+\input{titlepage.tex}
+  \date{}
+  \begin{document}
+  \bch
+  \tpage{8}{Big-Bang Nucleosynthesis and Ionization History}
+
+  \section{Neutrino decoupling}
+
+  \secpage{一个疑问的回顾}{我们之前说因为宇宙膨胀，中微子和正负电子在大约 $1.5\SIMeV$ 的温度附近脱耦，现在我们对这个脱耦温度来给出一个大致的量级估算。}
+
+  \begin{frame}
+    \frametitle{散射截面}
+    学习过量子场论(\lfig{0.2}{tinyblackq.jpg})的你一定记得散射截面的概念——从经典物理的观点看，它可以看成粒子能够发生碰撞的有效截面积大小。
+
+    \skiplines
+    
+    在很多数情况下，粒子(1,2)散射生成两个粒子(3,4)的散射截面 $\sigma$ 和相对速率 $\upsilon$ 的乘积可以这样估算数量级：
+    {\blue $$\sigma \upsilon \sim \frac{\lambda^2E_1E_2E_3E_4}{E_{\rm prop}^4E^2_{\rm tot}}.$$}
+    这里 $\lambda$ 是无量纲耦合常数， $E_{\rm prop}$ 是传播子能量量级，$E_{\rm tot}=E_1+E_2=E_3+E_4$ 是入射粒子(或出射粒子)总能量。
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{中微子脱耦温度的估算}
+    辐射为主的时期，哈勃参数 $H \sim T^2/m_P$，这里 $m_P\sim 10^{19}\SIGeV$ 是Planck质量 。（推导用到能量密度 $\rho \sim T^4$以及第一个Friedmann 方程）
+
+
+    在宇宙年龄时间尺度($\sim H^{-1}\sim m_P/T^2$)内，一个轻子（电子或中微子）的散射截面扫出的空间体积 $V \sim \sigma \upsilon H^{-1}$ 内遇到能够发生散射的轻子的个数大约是
+    $$N_{\rm scatter} = nV \sim T^3  (\sigma \upsilon H^{-1}) \sim \sigma \upsilon T m_P$$
+    这里 $T$ 是宇宙辐射温度。
+    
+    电子、中微子的散射属于弱相互作用，其无量纲耦合常数大约是 $0.03$，传播子能量尺度是 $E_{\rm prop}\sim 10^2\SIGeV$，所有入射出射粒子能量尺度大概率都是 $\sim T$ 的量级。因此
+    $$\sigma \upsilon \sim \frac{(0.03)^2 T^4}{ (10^2\SIGeV)^4T^2} \sim \frac{T^2}{10^{11}\SIGeV^4}.$$
+    
+  \end{frame}
+
+
+    \begin{frame}
+    \frametitle{中微子脱耦温度的估算(续)}
+    于是得到
+    $$ N_{\rm scatter} \sim \frac{T^3m_P}{10^{11}\SIGeV^4} \sim \frac{10^8T^3}{\SIGeV^3} $$
+    当 $N_{\rm scatter}< 1$ 时（跨越宇宙年龄也碰不到一个好友，只能孤独终老），中微子和正负电子就脱耦了。因此估算出脱耦温度大致为 $10^{-8/3}\SIGeV \approx 2\SIMeV$，这离精确值 $1.5\SIMeV$ 相差并不远。（但没什么好高兴的，只是一堆$\pi$啥的抵消后的好运气而已。）
+  \end{frame}
+
+  
+  \section{BBN}
+  \secpage{原初核合成}{$^4\mathrm{He}$核个数 $:$ $\mathrm{H}$核个数 $\approx 1:12$}
+  
+  \begin{frame}
+    \frametitle{中子-质子的热平衡}
+    我们之前对正反中微子、正反电子、和光子的\sout{恋爱史}演化史有了一些了解，这次我们来聊聊中子和质子。
+
+    \skipline
+    
+    当宇宙处于极高温时，下列(弱相互作用)反应维持了中子和质子的热平衡：
+    $$ n+\nu \leftrightarrow p + e $$
+    $$ n + e^+ \leftrightarrow p + \bar{\nu} $$
+    这时中子个数和质子个数之比遵循玻尔兹曼分布： $\frac{N_n}{N_p}=e^{-\frac{\Delta M}{T}}$。这里 $T$ 是温度， $\Delta M = 1.293 \SIMeV$ 是中子-质子质量差。
+%    $$\Delta M = m_n-m_p =  939.5656 \SIMeV - 938.2723 \SIMeV = 1.2933 \SIMeV.$$
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{中子-质子脱耦}
+    中子-质子脱耦和中微子-正负电子脱耦的原理都差不多，重复上述估算过程可以得到结果仍然在 $\SIMeV$ 的量级。
+
+    \skipline
+    
+    更精确的半定量估算可以参考Mukhanov大佬的书，结果是 $0.84\SIMeV$。这时按照平衡分布的话，中子个数和质子个数之比大约是 $e^{-\frac{1.293\SIMeV}{0.84\SIMeV}}=1:5$。但和中微子脱耦的情况类似，这时用平衡分布来计算其实是有些误差的。更精确的数值计算给出脱耦时中子个数和质子个数之比大约是 $1:6$。
+
+    \skipline
+
+    脱耦时裸中子还未形成氦原子，还会继续通过 $\beta$衰变 $n\rightarrow p+e+\bar{\nu}$ 缓慢变少。两百多秒后，大部分中子都组成了稳定的$^4\mathrm{He}$原子核，{\blue 宇宙中中子和质子的数目比就稳定在了大约 $1:7$ 的比例}。
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{轻元素形成}
+    经过一系列\sout{令人头秃的}复杂过程(此处省略五千行代码…)，中子和质子依次先形成 $D$ 核, $^3\mathrm{He}$ 核，$^4\mathrm{He}$ 核。因为 $^4\mathrm{He}$ 很稳定，再形成更重的元素有亿点点费劲。所以最终大部分中子都跑到了 $^4\mathrm{He}$ 里面。
+
+    \skipline
+    
+    按照中子和质子 $1:7 = 2:(2+12)$ 的比例，2个中子和2个质子组成一个 $^4\mathrm{He}$ 核，12个质子找不到中子组队只好游离着做 \sout{单身狗} $\mathrm{H}$ 核。$^4\mathrm{He}$ 核和 $\mathrm{H}$ 核个数之比就是 $f_{\rm He}\approx \frac{1}{12}$；氦元素和氢元素的{\bf 质量比}就大约是 $1:3$。通常用一个氦丰度参数 $Y_P$ （氦元素质量占所有元素质量比重）来描述这个结果
+    $$Y_P\approx \frac{1}{1+3} = 0.25$$
+    目前为止这和观测符合得很好。
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{$Y_P$ 和 $f_{\rm He}$ 的关系}
+    $Y_P$ 代表原初氦核的质量占比，$f_{\rm He}$ 代表原初氦核和氢核的个数之比；两者之间的关系是：
+    $$Y_P = \frac{f_{\rm He} m_{\rm He}}{m_H + f_{\rm He} m_{\rm He}}=\frac{f_{\rm He}}{f_{\rm He}+0.2518}$$
+    或者等价地
+    $$f_{\rm He} = \frac{m_H}{m_{\rm He}}\frac{Y_P}{1-  Y_P}=\frac{Y_P}{3.9715(1-  Y_P)}$$
+
+    （这些关系都是简单小学算术，和 $Y_P$ 是否约等于 $0.25$ 无关。）
+    
+  \end{frame}
+  
+  \section{Ionization History}
+
+  \secpage{宇宙电离史}{氦复合$\rightarrow$氢复合$\rightarrow$黑暗时期$\rightarrow$再电离$\rightarrow$花花世界}
+  
+  \begin{frame}
+    \frametitle{宇宙电离史}
+    \bitem
+    \item{{\blue Recombination}: {\scriptsize 宇宙在大约温度为 $0.5\SIMeV$ 时，大多数正反电子湮灭变成了光子。但是，由于正反物质不对称，还留下了大约占比为 $\sim 10^{-9}$ 比例的电子。当宇宙温度继续下降到了几千 $\SIK$ 时，这些电子相继和氦原子核以及氢原子核结合，形成了中性原子——这个过程叫做宇宙复合——这个名字起得很烂，因为电子和原子核之前从来没有在一起过（第一次结婚就叫复婚？）。}}
+    \item{{\blue The Dark Era}: {\scriptsize 由于没了自由电子的散射，光子就可以直线通行，也就是说，宇宙在红移1000处变得透明。但这透明的宇宙可能和你想象中有所不同——因为没有光子和任何东西发生散射，我们今天无法直接观测这部分宇宙的信息——透明的宇宙也是黑暗的宇宙。}}
+    \item{{\blue Reionization}: {\scriptsize 又过了大约十亿年，宇宙中的物质在引力作用下结团，开始频繁形成恒星等天体。这些天体发射出的高温光子又把大多数原子给电离了，宇宙再次变得不那么透明——这叫做宇宙再电离——这名字还凑合（嗯，把“第一次分手”叫做“再单身”显得更喜庆）。}}
+      \eitem
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{Ionization fraction $X_e$}
+    不知道是出于历史的原因还是为了写方程方便，宇宙学里的电离率 $X_e$ 被定义为自由电子个数和氢原子核（即电离的质子或非电离的氢原子）个数之比：
+    $$X_e\equiv \frac{n_e}{n_H}.$$
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{定性分析 $X_e$ 变化史}
+    \bitem
+  \item{一开始，所有原子都是电离的，自由电子和质子总数相等；但记得14个质子里面只有12个属于氢核吧，这时 $X_e\approx \frac{14}{12}=1.167$。}
+  \item{当氦原子内层电子被俘获之后，14个电子也只剩下13个自由了，这时 $X_e\approx \frac{13}{12} = 1.083$。}
+  \item{随后氦原子外层电子也被束缚住，14个电子只剩下12个自由，这时 $X_e = \frac{12}{12}=1$。}
+  \item{随后氢原子的电子也被束缚，几乎没有了自由电子，这时  $X_e \approx 0$。}
+  \item{随后，在红移10左右，宇宙再电离；但氦原子内层电子太难电离，所以大致是回到了第二步 $X_e\approx 1.083$ 的状态。}
+    \eitem
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{RECFAST代码数值计算结果}
+    \addfig{3.9}{xeofz.png}
+  \end{frame}
+
+  \section{RECFAST}
+
+  \secpage{RECFAST}{我们来详细研究下 $X_e(z)$ 到底是怎么算的}
+
+  \begin{frame}
+    \frametitle{玻尔兹曼分布}
+    在温度 $T \ll \SIMeV$ 时，不管是核子还是电子都是非相对论性的，而且其粒子数密度都远小于 $T^3$ 的量级。所以不管是费米分布还是玻色分布都退化为玻尔兹曼分布，其粒子数密度为：
+    $$ n = g \left(\frac{mT}{2\pi}\right)^{3/2} e^{-\frac{m-\mu}{T}}$$
+    这里的 $g$ 是内禀自由度个数，$m$ 是质量， $\mu$ 是化学势。
+    
+    (好了别使劲翻你的热学书了，这东西会点高斯积分就能推出来！)
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{He内层电子复合：Saha近似}
+    随便举个栗子，考虑 $\mathrm{He}$ 的内层电子复合过程：
+    $$\mathrm{He}^{2+}+e \leftrightarrow \mathrm{He}^+ + \gamma$$
+    左右两边粒子的静止质量差，也就是 $\mathrm{He}$ 内层电子的束缚能，是 $B_{\rm He^{2+}}=54.4\SIeV$。对平衡态的玻尔兹曼分布，可算出
+    $$\frac{n_{\rm He^{2+}} n_e}{n_{\rm He^{+}}} = \frac{g_{\rm He^{2+}} g_e}{g_{\rm He^{+}}}\left(\frac{Tm_e}{2\pi}\right)^{3/2}e^{-\frac{B_{\rm He^{2+}}}{T}} $$
+    对给定的 $\Omega_bh^2$ （可以推算出总重子数和 $T^3$ 的比例关系） 和 $Y_P$，可以推算出 $ n_{\rm He^{2+}} + n_{\rm He^{+}} $ 的值以及 $n_e+n_{\rm He^{+}}$ 的值，因此可以完备地解出 $n_e$ 如何随 $T$ 变化。
+
+    这种计算方法称为 Saha 近似。实际上， $\mathrm{He}$ 的内层电子复合就是这样计算的。
+  \end{frame}
+  
+  \begin{frame}
+    \frametitle{RECFAST代码}
+    对 He 外层电子复合以及 H 复合则要复杂很多。过程后半阶段偏离平衡分布比较多，Saha近似完全不适用。特别是H复合的计算，涉及了H的多个能级之间跃迁过程。精确计算的数值代码比较大（也许重点是慢）。
+
+    \skipline
+
+    于是大牛们想了个近似计算的办法，把一堆高能级当成单个“连续态”。这样虽然不准确，但是写出演化方程后，给方程里加个“fudge因子”就可以进行很好的修正。这个“fudge”因子由精确（但很慢)的数值计算获得（但它对宇宙学不敏感，只要算一次就可以一直用了）。一般认为这个近似算法可以把氦和氢复合的 $X_e(z)$ 算到 $0.1\%$ 的精度。
+
+      \skipline
+      
+      进行这个计算的代码叫 {\blue RECFAST}。
+
+      \skipline
+    
+    \warn{RECFAST不包含红移10左右的宇宙再电离（这个目前还没法从第一原理计算，通常是近似取个$\tanh$ 函数之类的唯象地处理）。}    
+  \end{frame}
+
+
+
+  \secpage{Reionization唯象模型}{ $$\tau = \int n_e\sigma_T cdt $$}
+  
+  \begin{frame}
+    \frametitle{光深 (Optical Depth)}
+    一个光子在时间 $dt$ 可以刷出 $\sigma_Tcdt$ ($\sigma_T$是Thomson散射截面) 的体积，在这个体积里能碰到的电子数就是 $n_e\sigma_Tcdt $（如果$dt$ 很小，这个数就远小于$1$)，它不被任何电子散射的概率是
+      $$1-n_e\sigma_Tcdt \approx  e^{-n_e\sigma_T c\,dt} $$
+      如果一个光子处于 Dark Era，那么它中途不撞电子爽，一直不撞一直爽，最后到达银河系的概率是
+      $$ e^{-\int_0^{z^*}n_e\sigma_T c\, dt} $$
+      这里的积分我们定义为再电离{\blue 光深(optical depth)}：
+      $$\tau \equiv \int_0^{z^*}n_e\sigma_T c\,dt$$
+      积分限 $z^*$ 要取在再电离之前， 可以取比如说 $z^*=50$。
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{再电离唯象模型}
+    通常认为宇宙再电离是比较快地从 $X_e\approx 0$ 到 $X_e\approx 1+ f_{\rm He}$ 的过程，因此用一个 $\tanh$ 函数来近似描述：
+    $$ X_e(z) =  \frac{1 + f_{\rm He}}{2}\left\{1+\tanh\left(\frac{2\left[\left(1+z_{\rm re}\right)^{3/2}-\left(1+z\right)^{3/2}\right]}{3\sqrt{1+z_{\rm re}} \Delta_{\rm re}}\right)\right\}$$
+    这个唯象模型包含两个参数 $z_{\rm re}$ （再电离红移）和 $\Delta_{\rm re}$ （再电离红移跨度）。一般会取定 $\Delta_{\rm re} = 0.5$ （这是根据观测线索估摸着大概取的， 实际上这就够了，因为$\Delta_{\rm re}$ 的精确值对宇宙学各种观测量影响都几乎可以忽略）。     
+
+    \skiplines
+    
+    取定 $\Delta_{\rm re}$ 后，再电离光深 $\tau$ 就和 $z_{\rm re}$ 建立了单调映射的关系。在宇宙学各种计算中，把 $\tau$ 作为参数是常见的做法。因此我们需要掌握如何从 $z_{\rm re}$ 计算 $\tau$ 以及如何从 $\tau$ 反解 $z_{\rm re}$。
+  \end{frame}
+  
+
+  \begin{frame}
+    \frametitle{计算 $X_e(z)$ 的python代码}
+    市面上的RECFAST很容易搜索到，但是是Fortran77或者C写的（也有本质是Fortran，安装后可以从python黑箱调用的）。我把RECFAST改写为更易读（也易修改）的python版本，并加入了再电离的唯象模型。
+
+    \skipline
+
+    \url{http://zhiqihuang.top/cosm/codes/cosmoion.py}
+
+        \skipline
+    
+    标准的RECFAST使用$\Lambda$CDM模型。而在这个python版本里我已经顺手把宇宙学模型扩展为 $w_0$-$w_a$ 模型了。
+  \end{frame}
+
+  
+  
+  \ech
+\end{document}
+
+
+
+
+  
