@@ -1,0 +1,552 @@
+\documentclass[CJK,13pt]{beamer}
+\input{macros.tex}
+\input{titlepage.tex}
+  \date{}
+  \begin{document}
+  \bch
+  \tpage{11}{Linear Perturbation Theory III}
+
+  \secpage{早上起来，发现还有个小目标没有完成……}{\addfig{1.1}{xiaomubiao.jpg}}
+  
+
+  \begin{frame}
+    \frametitle{目前的进度}
+    \bitem
+  \item[\checkmark]{给出度规微扰的数学描述(难度系数 $\star\star$)}
+  \item[\checkmark]{计算爱因斯坦张量(难度系数 $\star\star\star\star$)}
+  \item[\checkmark]{计算各种成分的能量动量张量(难度系数 $\star\star\star$)}    
+  \item[\checkmark]{写出CDM的运动方程(难度系数 $\star$)}
+  \item[\checkmark]{写出baryon的运动方程(难度系数 $\star\star$)}        
+  \item[\checkmark]{写出massless neutrino的玻尔兹曼方程(难度系数 $\star\star\star\star\star$)}
+  \item[7]{写出photon的玻尔兹曼方程(难度系数 $\star\star\star\star\star\star\star\star\star\star$)}
+  \item[8]{把所有方程写成代码(难度系数$\star\star\star\star\star\star\star\star$)}
+    \eitem
+
+    \skipline
+
+  \end{frame}
+    
+
+  \secpage{微目标7}{光子的玻尔兹曼方程}
+
+
+  \section{Thomson Scattering}
+
+
+  \begin{frame}
+    \frametitle{散射平面内的偏振电场会有个 $\cos\chi$ 的投影}
+    \addfig{3}{ThomsonScatter.png}
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{入射点附近的光子分布的四极矩不对称性产生线偏振}
+    \addfig{3}{TS_Linear.png}
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{研究的变量}
+    虽然光子的散射很复杂，但还是线性微扰；我们仍然只要讨论固定 $\vec{k}$ 对应的一系列傅立叶模式之间的相互作用和演化。按照研究中微子的经验，我们关注的是经过对 $q^3dq$ 积分后的分布函数的相对扰动。对光子而言，Thomson散射会产生线偏振，因此我们需要研究每个 $\hat{q}$ 方向的 $I, Q, U$ 等 Stokes 参数；也就是说，我们研究的是
+    $$\frac{\delta I}{I}(\tau, k, \hat{q}),  \frac{Q}{I}(\tau, k, \hat{q}), \frac{U}{I}(\tau, k, \hat{q}) $$
+    的演化。其中背景光强 $I$ 对应上一讲讨论的 $\int q^3f_0(q)dq$项，各向光强扰动 $\delta I$ 对应上一讲讨论的 $\int q^3\delta f(\tau, \vec{k}, \vec{q}) dq$ 项; $Q, U$ 是为了描述极化引入的新变量。
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{标量扰动的展开}
+    根据对称性，所有变量对方向 $\hat{q}$ 的依赖都可以简化为对 $\mu = \hat{k}\cdot\hat{q}$  的依赖。如果把 $\hat{k}$ 方向取为$z$轴方向，则所有变量按照球谐函数展开将只用考虑 $m=0$ 的成分。此外，由spin-2场 $(Q, U)$ 导出的标量场（见附录）应该不含赝标量场 $B$。所以我们最后演化的其实只有：
+    
+    $$\frac{\delta I}{I}(\tau, k, \mu) = \sum_{\ell = 0}^\infty (-\ii)^\ell  F_{\gamma \ell}(\tau, k) P_{\ell}(\mu)$$
+    $$\frac{Q\pm \ii U}{I}(\tau, k, \mu) = \sum_{\ell = 0}^\infty (-\ii)^\ell E_{\ell}(\tau, k) \left[_{\pm 2}P_{\ell}(\mu)\right].$$
+    其中推广的Legendre函数
+    $$ _{\pm 2}P_{\ell}(\cos\theta) \equiv \sqrt{\frac{2\ell+1}{4\pi}}\left[_{\pm 2}Y_{\ell 0}(\theta, \phi)\right]$$
+  \end{frame}
+
+
+
+  \begin{frame}
+    \frametitle{演化方程}
+    我们先来看最简单的情况，当Thomson散射出射方向 $\hat{q}$ 恰好和 $\hat{k}$ 方向一样，入射方向 $\hat{q}'$ 和 $\hat{k}$  的夹角为 $\theta$ 时，和散射平面垂直 ($\vec{e}_\phi$方向)的电场分量不变，在散射平面内（$\vec{e}_{\theta}$) 的电场分量多了 $\cos\theta$ 的因子。因此每次散射
+      \bea
+      && \frac{I+Q}{2} \rightarrow \frac{I+Q}{2}\cos^2\theta \newl
+      && \frac{I-Q}{2} \rightarrow \frac{I-Q}{2} \newl
+      && U \rightarrow U\cos\theta
+      \eea
+      
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{演化方程}
+        \bmini{0.4}
+    \lfig{1.8}{EulerAngles.png}
+    \emini
+    \bmini{0.55}
+{\small    左图展示了任意出射方向的Thomson散射，要涉及三步操作：在光子路径的法平面内把 $(Q,U)$ 旋转 $\alpha$ 角（切换到以出射方向为 $z$ 轴的参考系）； 和散射平面垂直的电场分量不变，在散射平面内的电场分量多了 $\cos\beta$ 的因子；最后在光子路径的法平面内把 $(Q,U)$ 旋转 $\gamma$ 角（回到初始以 $\hat{k}$ 为 $z$ 轴的参考系）。}
+    \emini
+
+{\small 利用附录C给出的加法公式，带 $\alpha,\beta,\gamma$ 的量最后都可以转化为 $\theta,\phi$ 和 $\theta',\phi'$的量。然后再对入射方向进行积分，并结合散射几率（用到RECFAST输出的 $X_e$），就可以得到 $F_{\gamma\ell}, E_{\ell}$ 的演化方程。（中间的计算请参考大佬 Wayne Hu 和 Martin White 在1997年在PRD上发表的神作。）}
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{最后的演化方程}
+    {\blue \small
+    \bea
+      \frac{d F_{\gamma 0}}{d \tau} &=& -\frac{1}{3}kF_{\gamma 1} + 4\Psi' \newl
+      \frac{d F_{\gamma 1}}{d \tau} &=& k\left(F_{\gamma 0}-\frac{2}{5}F_{\gamma 2} + 4\Phi\right) + an_e\sigma_Tc \left(4\upsilon_b-F_{\gamma 1}\right)\newl
+      \frac{d F_{\gamma 2}}{d \tau} &=& k\left(\frac{2}{3}F_{\gamma 1}-\frac{3}{7}F_{\gamma 3} \right) - an_e\sigma_Tc \left(\frac{9}{10}F_{\gamma 2}+\frac{\sqrt{6}}{10}E_2\right)\newl      
+      \frac{d F_{\gamma \ell}}{d\tau} &=& k\left[\frac{\ell}{2\ell-1} F_{\gamma,\ell-1}-\frac{\ell+1}{2\ell+3}F_{\gamma, \ell+1}\right]- an_e\sigma_Tc F_{\gamma\ell}, \   2< \ell < \ell_{\max} \newl
+      \frac{d F_{\gamma \ell_{\max}}}{d\tau} &=& k \frac{2\ell_{\max}+1}{2\ell_{\max}-1} F_{\gamma,\ell_{\max}-1}-\left(an_e\sigma_Tc+\frac{\ell_{\max}+1}{\tau}\right)F_{\gamma\ell_{\max}}      
+      \eea}
+  \end{frame}
+  
+
+  \begin{frame}
+    \frametitle{最后的演化方程（续）}
+     {\blue  \small \bea
+      \frac{d E_2}{d \tau} &=& -k\frac{\sqrt{5}}{7}E_{3}  - an_e\sigma_Tc \left(\frac{\sqrt{6}}{10}F_{\gamma 2}+\frac{2}{5}E_2\right)\newl      
+      \frac{d E_{\ell}}{d\tau} &=& k\left[\frac{\sqrt{\ell^2-4}}{2\ell-1} E_{\ell-1}-\frac{\sqrt{\ell^2+2\ell-3}}{2\ell+3}E_{\ell+1}\right]- an_e\sigma_Tc E_{\ell}, \   2< \ell < \ell_{\max} \newl
+      \frac{d E_{\ell_{\max}}}{d\tau} &=& k \frac{2\ell_{\max}-\frac{4}{\ell_{\max}}+1}{2\ell_{\max}-\frac{4}{\ell_{\max}}-1} E_{\ell_{\max}-1}-\left(an_e\sigma_Tc+\frac{\ell_{\max}-\frac{4}{\ell_{\max}}+1}{\tau}\right)E_{\ell_{\max}}      
+      \eea
+     }
+  \end{frame}
+
+
+
+
+  \begin{frame}
+    \frametitle{目前的进度}
+    \bitem
+  \item[\checkmark]{给出度规微扰的数学描述(难度系数 $\star\star$)}
+  \item[\checkmark]{计算爱因斯坦张量(难度系数 $\star\star\star\star$)}
+  \item[\checkmark]{计算各种成分的能量动量张量(难度系数 $\star\star\star$)}    
+  \item[\checkmark]{写出CDM的运动方程(难度系数 $\star$)}
+  \item[\checkmark]{写出baryon的运动方程(难度系数 $\star\star$)}        
+  \item[\checkmark]{写出massless neutrino的玻尔兹曼方程(难度系数 $\star\star\star\star\star$)}
+  \item[\checkmark]{写出photon的玻尔兹曼方程(难度系数 $\star\star\star\star\star\star\star\star\star\star$)}
+  \item[8]{把所有方程写成代码(难度系数$\star\star\star\star\star\star\star\star$)}
+    \eitem
+  \end{frame}
+  
+  \secpage{微目标8}{把所有方程写成代码}
+
+
+  \begin{frame}
+    \frametitle{背景变量}
+    我们使用的时间变量是 $N\equiv \ln a$ (按$a_0=1$的归一化)。标准的代码 CAMB, CLASS 取共形时间为变量，所以我们的演化方程和标准代码都是不一样的。
+
+    \skipline
+    
+    数值代码中的变量都是针对一个固定的 $k$ 定义的：比如我们写 $\Psi$ 其实就是 $\Psi(\tau, k)$ 的意思。
+
+    \skipline
+    
+    为了简化符号我们约定：
+    $$k_H\equiv \frac{k}{aH}, \kappa_N \equiv \frac{n_e\sigma_Tc}{H}$$
+    它们都是随时间演化的背景变量。我们需要先运行 RECFAST 来计算 $\kappa_N$。
+  \end{frame}
+
+  \begin{frame}    
+    \frametitle{变量集合}    
+    具体的变量集合是：
+    $$\Psi, \Psi_N \equiv \frac{d\Psi}{dN}, \delta_c, \delta_b, \upsilon_{b}, \upsilon_{c}$$ 
+    $$F_{\nu\ell},F_{\gamma\ell}, E_{\ell},  \ell = 0,1,2,\ldots, \ell_{\max}$$
+    一个辅助变量是 $\Phi$，由爱因斯坦方程
+    $$ \Psi - \Phi = \frac{3}{5k_H^2}\left[\frac{8\pi G\rho_\gamma}{3H^2}F_{\gamma 2} + \frac{8\pi G\rho_\nu}{3H^2}F_{\nu 2} \right]$$
+    给出。
+  \end{frame}
+  
+  \begin{frame}
+    \frametitle{所有方程的合集}
+{\tiny
+\begin{align}
+\frac{d\Psi}{dN} &= \Psi_N\; ,\\
+ \frac{d\delta_c}{dN} &= - k_H \upsilon_{c} + 3 \Psi_N \;,\\
+ \frac{d \upsilon_{c}}{dN} &= - \upsilon_{c} + k_H \Phi \; , \\
+\frac{d\delta_b}{dN} &= - k_H \upsilon_{b} + 3 \Psi_N \;, \\
+\frac{d\upsilon_{b}}{dN} &= - \upsilon_{b} + k_H\Phi - \frac{\kappa_N}{R} \left[\upsilon_{b} - \frac{1}{4}F_{\gamma 1}\right]\;,\\
+\frac{d F_{\gamma 0}}{dN} &=  - \frac{1}{3} k_H F_{\gamma 1} + 4 \Psi_N\;,  \label{eq:hiestart}\\
+\frac{d F_{\gamma 1}}{dN} &= k_H\left[  F_{\gamma 0} - \frac{2}{5} F_{\gamma 2} + 4 \Phi\right] + \kappa_N \left[4\upsilon_{b} - F_{\gamma 1}\right]\;,\\
+\frac{d F_{\gamma 2}}{dN} &= k_H\left[ \frac{2}{3} F_{\gamma 1} - \frac{3}{7} F_{\gamma 3} \right] - \kappa_N \left[\frac{9}{10}F_{\gamma 2}+\frac{\sqrt{6}}{10}E_2\right]\;,\\
+\frac{d F_{\gamma \ell}}{dN} &= k_H \left[\frac{\ell}{2\ell - 1} F_{\gamma,\ell - 1} - \frac{\ell+1}{2\ell + 3} F_{\gamma,\ell+1}\right] - \kappa_N F_{\gamma \ell}\; \;(2<\ell<\ell_{\max})\;,\\
+\frac{dF_{\gamma \ell_{\max}}}{dN} &= \frac{2\ell_{\max}+1}{2\ell_{\max}-1} k_HF_{\gamma, \ell_{\max}-1} - \left(\kappa_N + \frac{\ell_{\max}+1}{aH\tau}\right) F_{\gamma, \ell_{\max}}\;,
+\end{align}}
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{所有方程的合集(续)}
+{\tiny
+\begin{align}  
+\frac{d F_{\nu 0}}{dN} &=  - \frac{1}{3} k_H F_{\nu 1} + 4 \Psi_N\;, \\
+\frac{d F_{\nu 1}}{dN} &= k_H\left[  F_{\nu 0} - \frac{2}{5} F_{\nu 2} + 4 \Phi\right]\;,\\
+\frac{d F_{\nu \ell}}{dN} &= k_H \left[\frac{\ell}{2\ell - 1} F_{\nu, \ell - 1} - \frac{\ell+1}{2\ell + 3} F_{\nu,\ell+1}\right]\; \;(2\le\ell<\ell_{\max})\;,\\
+\frac{dF_{\nu, \ell_{\max}}}{dN} &= \frac{2\ell_{\max}+1}{2\ell_{\max}-1} k_HF_{\nu,\ell_{\max}-1} - \frac{\ell_{\max}+1}{aH\tau} F_{\nu,\ell_{\max}}\;,\\
+\frac{d E_2}{dN} &= -k_H \frac{\sqrt{5}}{7}E_3 - \kappa_N\left[\frac{2}{5} E_2 + \frac{\sqrt{6}}{10} F_{\gamma 2}\right]\; ,\\
+\frac{dE_\ell}{dN} &= k_H \left[\frac{\sqrt{\ell^2-4}}{2\ell-1} E_{\ell-1} - \frac{\sqrt{\ell^2+2\ell-3}}{2\ell+3} E_{\ell+1}\right] - \kappa_N E_{\ell}\;\;(2<\ell<\ell_{\max})\;, \\
+\frac{dE_{\ell_{\max}}}{dN} &= \frac{2\ell_{\max}+1}{2\ell_{\max}-1}k_H E_{\ell_{\max}-1} - \left(\kappa_N + \frac{\ell_{\max}+1}{aH\tau}\right)E_{\ell_{\max}}\;, \label{eq:hieend}\\
+\frac{d\Psi_N}{dN} &= -\frac{1}{2}\left[\delta_b\frac{8\pi G\rho_b}{3H^2} + \delta_c\frac{8\pi G\rho_c}{3H^2} \right] - 2\Psi \nonumber \\ 
+& - 2(1-\epsilon)\Phi   - \frac{k_H^2}{3}(2\Psi - \Phi) - (5-\epsilon)\Psi_N  + \frac{3}{5k_H^2}\left(\frac{8\pi G\rho_\gamma}{3H^2}\frac{dF_{\gamma 2}}{dN} + \frac{8\pi G\rho_\nu}{3H^2}\frac{dF_{\nu 2}}{dN}\right) \;. \label{eq:PsiNN}
+\end{align}
+}
+  \end{frame}
+    
+
+    \begin{frame}
+      \frametitle{最后的麻烦}      
+      由于重子和光子在早期宇宙是勾结在一起(强耦合)的，重子和光子的速度差 $\upsilon_b - \upsilon_\gamma$ 在氢recombination之前保持几乎为零的状态，而在氢的recombination时期会发生爆发式增长；如果你是一名合格的程序猿，你应该立刻意识到这种从零开始的爆发式增长模式通常是数值不稳定的。
+      
+      \addfig{0.8}{pibei.jpg}
+
+      
+    \end{frame}
+
+    \begin{frame}
+      \frametitle{强耦合近似（Tight-coupling Approximation）}
+      光子平均多久和电子邂逅一次呢，用共形时间衡量的话，大约就是：
+      $$\tau_c \sim \frac{t_c}{a} \sim \frac{1}{a n_e\sigma_Tc} $$
+      当 $\tau_c \ll \tau $ （宇宙年龄内可以发生若干次邂逅）且 $\tau_c \lesssim \frac{1}{k}$ （自由运动时间小于不均匀性的特征尺度，无法被平均掉）时，强耦合条件就满足。这时通过一系列理论强操作，可以弄出一个 $\upsilon_b - \upsilon_\gamma$  的近似表达式 (tight-coupling approximation)。
+
+
+      \addfig{0.8}{shuaima.jpg}
+      
+      这个表达式长得不是很帅，就不给它露脸的机会了，有兴趣的请直接参考我后面给出的代码。
+    \end{frame}    
+
+    
+    \begin{frame}
+      \frametitle{初始条件}
+      我们采用宇宙学标准的绝热扰动条件(adiabatic perturbations)来设置初始条件。所谓绝热条件，就是各种成分的扰动都是由原初引力势扰动造成的。由于在辐射为主的时期， $k_H\propto a$。在超过视界的尺度上（即 $k_H\ll 1$ 时)， $\Phi$ 近似是常数，这样根据前面的方程集可以看出下列初始条件是方程组的解：
+        $$ \upsilon_{b}=  \upsilon_{c}= \upsilon_{\gamma}= \upsilon_{\nu} = \frac{k_H\Phi}{2}$$
+        $$\delta_b = \delta_c = -\frac{3}{2}\Phi;\ \delta_\gamma = \delta_\nu = -2\Phi$$
+        $$F_{\nu 2} = \frac{2}{3}\Phi k_H^2 $$
+        $$\Psi = \left(1 + \frac{2}{5}\frac{\Omega_\nu}{\Omega_\gamma+\Omega_\nu}\right)\Phi $$
+        现在问题来了——初始的 $\Phi$ 怎么取呢？
+    \end{frame}    
+
+
+    \begin{frame}
+      \frametitle{原初功率谱和初始条件的归一化}
+      从暴胀中可以产生原初曲率扰动 $\zeta$。用高斯型随机变量 $\zeta$ 表示的原初功率谱为：
+      $$\langle \zeta(\vec{k}_1) \zeta(\vec{k}_2)\rangle = (2\pi)^3\delta(\vec{k}_1+\vec{k}_2)P_\zeta(k_1)$$
+      无量纲的功率谱一般参数化为：
+      $$\Delta^2(k)\equiv \frac{k^3}{2\pi^2}P_\zeta(k) = A_s\left(\frac{k}{k_{\rm pivot}}\right)^{n_s-1}$$
+      在CAMB和我们这里的实际的线性微扰计算中，我们总是取 $\zeta(\vec{k})$ 为 $1$。算出的微扰量称为 transfer function (用$T_F$表示)。要计算该微扰量的功率谱时，我们要把原初功率谱乘以 $|T_F|^2$.
+    \end{frame}
+
+    \begin{frame}
+      \frametitle{$\zeta=1$ 的初始条件设置}
+      在长波极限下，
+      $$\zeta = -\left[\Psi+\frac{2}{3}\frac{\Psi_N+\Phi}{1+w}\right]$$
+      辐射为主时期， $w=\frac{1}{3}$且 $\Psi_N\approx 0$。我们可以得到
+      $$\zeta = -\Psi - \frac{\Phi}{2}$$
+      由此再结合 $\Psi $ 和 $\Phi$ 的关系可以推出初始
+      $$\Phi = -\frac{1}{\frac{3}{2}+\frac{2}{5}\frac{\Omega_\nu}{\Omega_\gamma+\Omega_\nu}}$$
+    \end{frame}    
+    
+
+    \begin{frame}
+      \frametitle{代码以及检验}
+      我们最后给出代码：
+
+      \url{http://zhiqihuang.top/cosm/codes/boltzmann.py}
+
+            \skipline
+      
+      我们之前给出的四个爱因斯坦方程 $G^0_0, G^i_0, G^i_i, G^i_j$ 只有两个是独立的。因为 $G^0_0 = 8\pi GT^0_0 $ 对应能量守恒，已经由各种成分的能量守恒保证了； $G^0_i = 8\pi G T^0_i$ 对应动量守恒，已经由各种成分的动量守恒保证了。
+
+      \skipline
+      
+      我们已经使用了 $G^i_j$ 这个方程来确定 $\Phi$  和 $\Psi$ 的关系。剩下的一个  $\Psi_N$ 的演化方程是 $G^i_i$ 和 $ G^0_0$ 的线性组合。既然我们并未在演化方程中明确地要求能量守恒和动量守恒，就可以用这些守恒方程来检验代码的精度。
+
+      \skipline
+
+      检验结果表明代码的相对数值精度大约在 $10^{-4}$ 左右。（不错了不错了不改了不改了）
+    \end{frame}    
+
+    
+  \begin{frame}
+    \frametitle{撒花}
+    \bitem
+  \item[\checkmark]{给出度规微扰的数学描述(难度系数 $\star\star$)}
+  \item[\checkmark]{计算爱因斯坦张量(难度系数 $\star\star\star\star$)}
+  \item[\checkmark]{计算各种成分的能量动量张量(难度系数 $\star\star\star$)}    
+  \item[\checkmark]{写出CDM的运动方程(难度系数 $\star$)}
+  \item[\checkmark]{写出baryon的运动方程(难度系数 $\star\star$)}        
+  \item[\checkmark]{写出massless neutrino的玻尔兹曼方程(难度系数 $\star\star\star\star\star$)}
+  \item[\checkmark]{写出photon的玻尔兹曼方程(难度系数 $\star\star\star\star\star\star\star\star\star\star$)}
+  \item[\checkmark]{把所有方程写成代码(难度系数$\star\star\star\star\star\star\star\star$)}
+    \eitem
+  \end{frame}
+  
+  \section{Appendix}
+
+  \secpage{附录A}{球面上的自旋为2的场}
+
+  \begin{frame}
+    我们都知道平面上自旋为 $1$ 的，也就是矢量场 $\vecv$，当坐标系旋转 $\theta$  角时，满足下列变换规则:
+    \be
+      \tilde{v}_x = v_x\cos{\theta} + v_y\sin{\theta},\ \tilde{v}_y = v_y\cos{\theta} - v_x\sin{\theta}.
+      \ee
+      或者用复数形式 $v_x\pm \ii v_y$ 表示：
+      $$\tilde{v}_x\pm \ii \tilde{v}_y = (v_x\pm \ii v_y) e^{\mp\ii \theta}$$
+      
+      {\blue    自旋为2的场的变换规则很简单，就是把 $\theta$ 变为 $2\theta$:
+        $$\tilde{Q}\pm \ii \tilde{U} = e^{\mp 2\ii\theta}(Q\pm \ii U).$$}
+
+      \notes{如果是旋转矢量而非旋转坐标系，则 $e^{\mp \ii\theta}$ 要换成 $e^{\pm \ii \theta}$。}
+
+  \end{frame}
+  
+  \begin{frame}
+    具体写各个分量的变换规则：
+    \be
+      \tilde{Q}_x = Q_x\cos{2\theta} + Q_y\sin{2\theta},\ \tilde{Q}_y = Q_y\cos{2\theta} - Q_x\sin{2\theta}.
+      \ee
+      
+    \addfig{1.}{chulecai.jpg}
+
+    但是——这好像有些超出本喵的想象力
+  \end{frame}
+  
+  
+  \begin{frame}
+    \frametitle{从标量场构造 spin-2 场}
+    为了获得一些直观理解，我们先来看一些由$x$-$y$平面上的标量场构造出来的自旋为 $2$ 的场。设 $E$ 是一个标量场，定义
+    \be
+      q_E \equiv \left(\partial_x^2 - \partial_y^2\right)E,\ u_E = 2\partial_x\partial_yE.
+    \ee
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{从标量场构造 spin-2 场}    
+    当$x$-$y$坐标系绕原点旋转$\theta$至 $\tilde{x}$-$\tilde{y}$坐标系时，
+    \be
+      \frac{\partial x}{\partial\tilde{x}} = \cos\theta,\ \frac{\partial x}{\partial \tilde{y}} = -\sin\theta, \ \frac{\partial y}{\partial\tilde{x}} = \sin\theta,\ \frac{\partial y}{\partial \tilde{y}} = \cos\theta, \ 
+      \ee
+    于是有
+    \be
+      \frac{\partial E}{\partial\tilde{x}} = \frac{\partial E}{\partial x} \cos\theta + \frac{\partial E}{\partial y}\sin\theta,\ \frac{\partial E}{\partial \tilde{y}} = \frac{\partial E}{\partial y}\cos\theta-  \frac{\partial E}{\partial x} \sin\theta.
+    \ee      
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{从标量场构造 spin-2 场}    
+    以及
+    \begin{eqnarray}
+      \frac{\partial^2 E}{\partial\tilde{x}^2} &=& \frac{\partial^2 E}{\partial x^2} \cos^2\theta + \frac{\partial^2 E}{\partial y^2}\sin^2\theta + \frac{\partial^2 E}{\partial x \partial y}\sin 2\theta, \\
+      \frac{\partial^2 E}{\partial\tilde{x}\partial\tilde{y}} &=& \frac{\partial^2E}{\partial x \partial y} \cos 2\theta  - \frac{1}{2}\left(\frac{\partial^2 E}{\partial x^2}-\frac{\partial^2 E}{\partial y^2}\right)\sin 2\theta, \\  
+      \frac{\partial^2 E}{\partial\tilde{y}^2} &=& \frac{\partial^2E}{\partial y^2} \cos^2\theta + \frac{\partial^2E}{\partial x^2}\sin^2\theta - \frac{\partial^2E}{\partial x \partial y}\sin{2\theta},   
+    \end{eqnarray}
+    或者写成更紧凑的形式
+    \be
+      \tilde{q}_E = q_E\cos{2\theta} + u_E\sin{2\theta},\ \tilde{u}_E = u_E\cos{2\theta} - q_E\sin{2\theta}.
+    \ee
+    这说明我们从标量场 $E$ 构造的 $(q_E, u_E)$ 是自旋为 $2$ 的场。
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{后续: 拯救一下量纲}
+    注意到$(q_E, u_E)$ 的量纲和 $E$ 的量纲相比差了长度平方。为了不改变量纲，我们重新定义
+    {\blue $$ Q_E \equiv \left(\partial_x^2 - \partial_y^2\right)\left(-\nabla^{-2}E\right),\ U_E = 2\partial_x\partial_y\left(-\nabla^{-2}E\right). $$}
+    $-\nabla^{-2}E$ 在傅立叶空间的计算非常简单（除以 $k^2$就行)。因为 $-\nabla^{-2}E$ 也是标量场，所以 {\blue $(Q_E, U_E)$ 是 spin-2 场}。容易看出来，$Q_E$, $U_E$ 和 $E$ 具有一样的量纲。
+
+
+  \end{frame}
+
+  \begin{frame}
+    在平面上用标量场构造spin-2场有点容易，下面我们转战球面——
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{球谐函数展开}
+    我们知道很多情况下，单位球面上的函数用球谐函数 $Y_{\ell m}(\theta,\phi)$ 来展开非常方便。
+    假设单位球面上某个标量 $f$ 的球谐函数展开为：
+    $$ f(\theta,\phi) = \sum_{\ell} \sum_{m=-\ell}^\ell a_{\ell m}Y_{\ell m}(\theta,\phi).$$
+    在固定的 $(\theta,\phi)$ 点（假设不是北极和南极），我们取局域的南向为 $x$ 轴，东向为 $y$ 轴建立二维坐标系，就可以构造：
+    $$ Q_f\pm \ii U_f  =  (\partial_x^2 - \partial_y^2)（-\nabla^{-2}f) \pm 2\ii \partial_x\partial_y (-\nabla^{-2}f)$$
+    注意到 $-\nabla^{-2}Y_{\ell m} = \frac{1}{\ell(\ell+1)}Y_{\ell m}$，就有
+    $$ Q_f\pm \ii U_f  =   \sum_{\ell, m}a_{\ell m} \frac{1}{\ell(\ell+1)}\left[\left(\partial_x^2 - \partial_y^2\right) \pm 2 \ii \partial_x\partial_y \right]Y_{\ell m} $$
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{带自旋的球谐函数}
+    定义带自旋的球谐函数
+    $$_{\pm 2}Y_{\ell m} = \frac{1}{\ell(\ell+1)}\left[\left(\partial_x^2 - \partial_y^2\right) \pm 2 \ii \partial_x\partial_y \right]Y_{\ell m} $$
+    我们知道如果把 $(\theta,\phi)$ 点附近当成平坦的，大致地有 $dx \approx d\theta$,  $dy \approx \sin\theta d\phi)$，但这样问题就来了：
+    $$\partial_y\partial_x \sim \frac{1}{\sin\theta}\partial_\theta \partial_\phi$$
+    $$\partial_x\partial_y \sim \frac{1}{\sin\theta}(\partial_\theta -\cot\theta)\partial_\phi$$
+    这种不对易当然是由于球面的内禀弯曲，我们不得不取了非直角坐标造成的。所以你很难搞清楚到底该用 $\partial_\theta$ 还是 $\partial_\theta - \cot\theta$ 来替换 $\partial_x$。
+  \end{frame}
+  
+  \begin{frame}
+    \frametitle{干啥啥不行，瞎蒙我第一}
+    你期待的结果大概是
+    {\scriptsize $$ _{\pm 2}Y_{\ell m} \sim \frac{1}{\ell(\ell+1)}\left[  \left(\partial_\theta^2 -\frac{1}{\sin^2\theta}\partial_\phi^2\right) \pm  \frac{2\ii}{\sin\theta} \partial_\theta \partial_\phi\right]Y_{\ell m} $$}
+    但是由于球面的弯曲，你无法确定那里说不定 $\partial_\theta$ 就被替换为 $\partial_\theta - \cot\theta$ 了，归一化系数也可能会因此小有调整。
+
+    \skipline
+    
+    最后按照协变微分计算的结果（此处省略两千行球面几何符号）确实大致如此：{\blue
+    \bea
+    _{\pm 2}Y_{\ell m} &\equiv &  \frac{1}{\sqrt{(\ell-1)\ell(\ell+1)(\ell+2)}} \times \newl
+    && \left[\left(\left(\partial_\theta-\cot\theta\right)\partial_\theta -\frac{1}{\sin^2\theta}\partial_\phi^2\right) \right. \newl
+     && \left. \pm  \frac{2\ii}{\sin\theta}\left(\partial_\theta-\cot\theta\right) \partial_\phi\right]Y_{\ell m}
+    \eea}
+  \end{frame}
+
+  
+
+  \secpage{附录B}{任意自旋 $s$ 的球谐函数 $_sY_{\ell m}(\theta,\phi)$ 的性质(这部分内容大都没用，仅仅是用来\sout{羞辱你}给你充电的）}
+
+
+    \begin{frame}
+      \frametitle{任意自旋 $s$ 的球谐函数}
+      \bea
+      _sY_{\ell m}(\theta,\phi) &=&\left[\frac{2\ell+1}{4\pi}\frac{(\ell+m)!(\ell-m)!}{(\ell +s)!(\ell-s)!}\right]^{1/2}  \newl
+     && \times \left(\sin\frac{\theta}{2}\right)^{2\ell}\sum_r \begin{pmatrix}
+        \ell - s \\
+        r
+      \end{pmatrix}\begin{pmatrix}
+        \ell + s \\
+        r+ s - m
+      \end{pmatrix} \newl
+     && \times (-1)^{\ell - r - s}e^{\ii m\phi}\left(\cot\frac{\theta}{2}\right)^{2r+s-m}
+      \eea
+    \end{frame}
+
+
+  
+  \begin{frame}
+    \bitem
+    \item{$_0Y_{\ell m} \equiv Y_{\ell m}.$}
+    \item{正交归一化 $$\int_0^\pi \sin\theta d\theta \int_0^{2\pi} d\phi\, \left[ _{\pm 2}Y_{\ell m}(\theta,\phi)\right]^*\left[ _{\pm 2}Y_{\ell'm'}(\theta,\phi)\right] = \delta_{\ell\ell'}\delta_{mm'}.$$}
+    \item{完备 $$ \sum_{\ell, m} \left[_sY_{\ell m}^*(\vec{n}_1)\right]\left[_sY_{\ell m}(\vec{n}_2)\right] = \delta(\vec{n}_1-\vec{n}_2)$$}
+    \item{共轭 $$ \left[_{s}Y_{\ell m}\right]^* = (-1)^{m+s}\left[_{-s}Y_{\ell,-m}\right].$$ }
+      \item{宇称 $$ _sY_{\ell m}(-\vec{n}) = (-1)^\ell\left[_{-s}Y_{\ell m}(\vec{n})\right]$$}
+      \eitem
+  \end{frame}    
+
+
+  \begin{frame}
+    \frametitle{加法定理}
+    \bmini{0.4}
+    \lfig{1.8}{EulerAngles.png}
+    \emini
+    \bmini{0.55}
+    \bea
+   && \sum_m \left[_{s_1}Y_{\ell m}^*(\theta',\phi')\right]\left[_{s_2}Y_{\ell m}(\theta,\phi)\right] \newl
+    &=& \sqrt{\frac{2\ell+1}{4\pi}}\left[_{s_2}Y_{\ell, -s_1}(\beta,\alpha)\right] e^{-\ii s_2\gamma}
+    \eea
+    \emini
+  \end{frame}    
+
+
+  \begin{frame}
+    \frametitle{三乘积积分性质}
+    \bea
+    && \int \left[_{s_1}Y_{\ell_1 m_1}(\vec{n})\right] \left[_{s_2}Y_{\ell_2 m_2}(\vec{n})\right] \left[_{s_3}Y_{\ell_3 m_3}(\vec{n})\right] d^2\vec{n} = \newl
+    && \sqrt{\frac{(2\ell_1+1)(2\ell_2+1)(2\ell_3+1)}{4\pi}}\begin{pmatrix}
+      \ell_1 & \ell_2 & \ell_3 \\
+      m_1 & m_2 & m_3
+    \end{pmatrix}
+    \begin{pmatrix}
+      \ell_1 & \ell_2 & \ell_3 \\
+      -s_1 & -s_2 & -s_3
+      \end{pmatrix}
+    \eea
+    这里的 3-$j$ symbol 和 Clebsch-Gordan系数的关系是：
+    \be
+    \begin{pmatrix}
+      \ell_1 & \ell_2 & \ell_3 \\
+      m_1 & m_2 & m_3
+    \end{pmatrix} = \frac{(-1)^{\ell_1-\ell_2-m_3}}{\sqrt{2\ell_3+1}}\langle \ell_1m_1\ell_2m_2\vert \ell_3(-m_3)\rangle
+    \ee
+  \end{frame}    
+  
+
+  \secpage{附录C}{球面上spin-2场的展开}
+
+    \begin{frame}
+    \frametitle{标量场导出spin-2场}
+    在球面上的标量场
+    $$ f(\theta,\phi) = \sum_{\ell, m}a_{\ell m}Y_{\ell m}(\theta,\phi)$$
+    可以导出（同量纲的）spin-2场
+    $$ Q_f + \ii U_f = \sum_{\ell, m}a_{\ell m}\ \left[_{2}Y_{\ell m}(\theta,\phi)\right]$$
+    上式取共轭得到
+    $$ Q_f - \ii U_f = \sum_{\ell, m}(-1)^m a_{\ell m}^*\ \left[_{-2}Y_{\ell,-m}(\theta,\phi)\right]$$    
+  \end{frame}
+
+    \begin{frame}
+      \frametitle{标量场导出spin-2场}      
+    如果 $f$ 是实标量场，那么对 $f$ 的球谐函数展开取共轭
+    $$ f(\theta,\phi) = \sum_{\ell, m}a_{\ell m}^*(-1)^m Y_{\ell,-m}(\theta,\phi)$$
+    由展开唯一性我们判断出 $(-1)^ma_{\ell m}^* = a_{\ell, -m}$，于是
+    $$ Q_f - \ii U_f = \sum_{\ell, m} a_{\ell m}\ \left[_{-2}Y_{\ell,m}(\theta,\phi)\right]$$
+    于是最后写到一起
+    $$Q_f\pm \ii U_f = \sum_{\ell, m} a_{\ell m}\ \left[_{\pm 2}Y_{\ell,m}(\theta,\phi)\right]$$
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{反向操作：spin-2场导出标量场}
+    球面上任意的spin-2场 $(Q, U)$，可以按照 $_{\pm 2}Y_{\ell m}$ 展开：
+    $$ Q + \ii U = \sum_{\ell, m}a_{\ell m}\ \left[_{2}Y_{\ell m}(\theta,\phi)\right]$$
+    取共轭，有
+    $$ Q - \ii U = \sum_{\ell, m}(-1)^m a_{\ell, -m}^*\ \left[_{-2}Y_{\ell ,m}(\theta,\phi)\right]$$    
+    令 $E_{\ell m} = \frac{a_{\ell m}+(-1)^m a_{\ell, -m}^*}{2}$, $ B_{\ell m} = \frac{a_{\ell m}-(-1)^m a_{\ell, -m}^*}{2\ii}$，则
+    $$ Q\pm \ii U = \sum_{\ell, m} (E_{\ell m}\pm \ii B_{\ell m})\left[_{\pm 2}Y_{\ell m}(\theta,\phi)\right]$$
+  \end{frame}
+  
+  \begin{frame}
+    \frametitle{反向操作：spin-2场导出标量场}    
+    令
+    $$ E(\theta,\phi) = \sum_{\ell m} E_{\ell m} Y_{\ell m}(\theta,\phi)$$
+    $$ B(\theta,\phi) = \sum_{\ell m} B_{\ell m} Y_{\ell m}(\theta,\phi)$$
+    那么 $E_{\ell m}^* = \frac{a^*_{\ell m}+(-1)^m a_{\ell, -m}}{2} = (-1)^m E_{\ell, -m}$，$B_{\ell m}^* =  \frac{a_{\ell m}^*-(-1)^m a_{\ell, -m}}{-2\ii} = (-1)^m B_{\ell, -m}$，所以 $E, B$ 都是实标量场。
+
+    \skiplines
+    
+    \notes{局域正交标架对任一坐标轴的反射操作下，要求$Q$ 保持不变而 $U$ 反号，可以由此推出 $E$ 是真正的标量场，而 $B$ 是赝标量场。（请思考如何很简明地说明这个问题）}
+  \end{frame}
+
+
+  \secpage{附录D}{极化的Stokes参数描述}  
+
+
+  \begin{frame}
+    \frametitle{描述电磁波极化的Stokes参数 $I, Q, U$}
+    第一感，电场 $\vec{E} = (E_x, E_y )$ 是矢量，我们是否可以用这个矢量来描述电磁波呢？
+
+    因为一般测量的是远高于电磁波振荡周期的时间的平均（用 $\langle\cdot\rangle$ 表示），而在这种平均意义下 $\langle E_x\rangle = \langle E_y\rangle = 0$，所以 $(E_x, E_y)$ 并不是很好用的量。
+
+    用矢量 $(E_x, E_y)$ 构造的 spin-0 和 spin-2 场就不一样了：
+    $$ I \equiv \langle E_x^2+E_y^2 \rangle $$
+    $$ Q \equiv \langle E_x^2-E_y^2 \rangle,\ U \equiv \langle 2E_xE_y \rangle  $$    
+    在一般情况下，它们并不为零。（在垂直于传播方向的平面内的）spin-0的参数 I，和spin-2的参数 $(Q, U)$ 被称为 Stokes 参数。
+
+    
+    对于单频光，我们还可以把 $E_x$, $E_y$ 错开 $\frac{1}{4}$ 周期进行关联，得到描述圆偏振的 Stokes $V$ 参数。因为光子的 Thomson 散射不会产生圆偏振光，所以我们就不讨论了。    
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{电磁波的线偏振极化率和线偏振极化方向}
+    电磁波的线偏振极化率定义为
+    $$ p = \frac{\sqrt{Q^2+U^2}}{I}$$
+    容易验证 $0\le p\le 1$。
+    
+    线偏振极化方向定义为 $ Q+\ii U $ 的幅角的一半：
+    $$\phi = \frac{1}{2}\mathrm{arg}(Q+\ii U)$$
+    由于幅角存在可以随意加减 $2\pi$ 的不确定性，线偏振方向只是一个直线方向，不区分正负箭头。也就是说，$\phi$ 和 $\pi + \phi$ 是同一个线偏振方向。
+  \end{frame}
+  
+  
+  \ech
+\end{document}
+
+
+
+
+  
