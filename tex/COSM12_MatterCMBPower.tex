@@ -1,0 +1,180 @@
+\documentclass[CJK,13pt]{beamer}
+\input{macros.tex}
+\input{titlepage.tex}
+  \date{}
+  \begin{document}
+  \bch
+  \tpage{12}{Matter Power Spectrum and CMB Power Spectrum}
+
+  \section{Matter Power Spectrum}
+  \secpage{下面我们介绍如何用前面介绍的微扰计算结果来计算宇宙学观测量}{\addfig{1}{qidai.jpg}}
+
+  
+  \section{Matter Power Spectrum}
+
+  \secpage{物质扰动功率谱}{$$P_m(k; z) = \frac{8\pi^2a^2k}{9H_0^2\Omega_m^2} \lvert\Phi(k;z)\rvert^2 \Delta^2(k).$$}
+  
+  \begin{frame}
+    \frametitle{冷物质密度扰动}
+    利用泊松方程，可以从牛顿引力势算出“冷物质密度扰动” $\delta_m$：
+    $$ 4\pi G\bar{\rho}_m \delta_m = -\frac{k^2}{a^2}\Phi $$
+    注意密度扰动是依赖于规范的量，这里的 $\delta_m$ 和牛顿规范下的 $\delta_c, \delta_b$ 并不完全一致。它们仅在晚期宇宙、远小于视界尺度（$k\gg aH$） 时一致。在忽略辐射和中微子的情况下，$\delta_m$ 和物质共动同步规范下的冷物质密度扰动一致。
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{冷物质密度扰动功率谱}
+    利用 $\bar{\rho}_m = \frac{3H_0^2}{8\pi G}\Omega_m a^{-3}$，可以写出冷物质密度扰动的功率谱为
+    $$P_m(k; z) = |\delta_m(k)|^2 = \frac{4a^2k^4}{9H_0^2\Omega_m^2} \lvert\Phi(k;z)\rvert^2 P_\zeta(k)$$
+    我们代码算出来的 $\Phi(k; z)$ 实际上是隐去了原初扰动初始随机变量 $\zeta(\vec{k})$ 的因子，所以上面补回了 $\zeta$ 的功率谱。
+
+    用 $\zeta$ 的无量纲功率谱  $\Delta^2(k)=\frac{k^3}{2\pi^2}P_\zeta(k)$ 表示就是
+    $$P_m(k; z) = \frac{8\pi^2a^2k}{9H_0^2\Omega_m^2} \lvert\Phi(k;z)\rvert^2 \Delta^2(k).$$
+  \end{frame}
+
+
+  \begin{frame}
+    \frametitle{废话不多，直接上代码}
+    \url{http://zhiqihuang.top/codes/matterpower.py}
+
+    \skipline
+    
+    因为可能需要输出很大的 $k$ 的 $P_m(k)$，代码里对大的 $k$ 有特殊的处理方式：主要是把晚期宇宙的辐射和中微子的多极展开中的 $\ell>2$ 项进行人为压缩。物理上，由于晚期宇宙辐射和中微子占比低，且在小尺度($k\gg aH$)上很均匀，所以这个近似应该OK（数值上，你也可以通过改变压缩量来检测事实是否如此）。
+  \end{frame}
+
+  \section{CMB power spectrum}
+  
+  \secpage{CMB power spectrum}{加法公式又来了……}
+
+  \begin{frame}
+    \frametitle{宇宙微波背景辐射的光强扰动}
+    由于再电离的光深不大，原初宇宙光子可以在地球附近被观测到。由于目前宇宙原初光子的温度 $T_{\rm CMB}=2.726\SIK$ 在微波波段，这些光子就被称为宇宙微波背景辐射（Cosmic Microwave Background），简称CMB。当然，实际的观测并非如此简单，我们至少需要避开银河系和河外星系的星光的干扰。如果是地面上的观测，我们还要考虑大气干扰等各种因素。
+
+    \skipline
+
+    我们可以在两个方向 $\vec{n}_1$ 和 $\vec{n}_2$ 观测光子的分布函数扰动（偏离黑体谱）。一般我们只关心对 $q^3dq$ 积分后的光强扰动。它可以由傅立叶逆变换给出：    
+    $$\frac{\Delta I}{I}(\tau, \vec{x}, \vec{n}) = \frac{1}{(2\pi)^3}\int d^3\vec{k} \sum_{\ell}(-i)^\ell F_{\gamma\ell}(\tau, k)\zeta(\vec{k}) P_{\ell}(\vec{n}\cdot\hat{k})e^{i\vec{k}\cdot\vec{x}}$$
+
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{宇宙微波背景辐射温度扰动}    
+    我们只能在 $\tau = \tau_0$ (红移零处)观测CMB，另外根据宇宙学原理，也可以不妨取地球附近 $\vec{x} = 0$ (这一步不是必须的，即使不嫌麻烦留着 $\vec{x}$， 最后也会消掉)。另外由于 $I\propto T^4$，所以观测到的
+    $$\frac{\Delta T}{T}(\vec{n}) =\frac{1}{4} \frac{1}{(2\pi)^3}\int d^3\vec{k} \sum_{\ell}(-i)^\ell F_{\gamma\ell}(\tau_0, k)\zeta(\vec{k}) P_{\ell}(\vec{n}\cdot\hat{k}) $$
+    由于存在随机变量 $\zeta(\vec{k})$，我们无法预言任何一个方向的 $\frac{\Delta T}{T}(\vec{n})$。所以，我们的兴趣转移到了两个不同方向的温度扰动的统计关联：
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{宇宙微波背景辐射的角关联函数}
+    考虑 $\vec{n_1}$, $\vec{n_2}$ 两个方向上 $\frac{\Delta T}{T}$ 的统计关联（这个的意思是，按照暴胀理论，假想随机生成很多个宇宙并对这些宇宙中取平均；我们的宇宙只是随机生成的一个，所以实际观测到的量会偏离平均，这种偏离称为 cosmic variance）：
+    \bea
+     && \langle \frac{\Delta T}{T}(\vec{n}_1)  \frac{\Delta T}{T}(\vec{n}_2)\rangle \newl
+    &=& \frac{1}{16} \frac{1}{(2\pi)^6}\sum_{\ell,\ell'}(-i)^{\ell+\ell'} \times \newl
+    && \int d^3\vec{k} \int d^3\vec{k}' F_{\gamma\ell}(\tau_0, k)F_{\gamma\ell'}(\tau_0, k')\langle \zeta(\vec{k})\zeta(\vec{k}')\rangle P_{\ell}(\vec{n_1}\cdot\hat{k}) P_{\ell}(\vec{n_2}\cdot\hat{k}')
+    \eea
+    
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{宇宙微波背景辐射的角关联函数（续)}
+    代入原初曲率扰动功率谱的定义：
+    $$ \langle \zeta(\vec{k})\zeta(\vec{k}')\rangle = (2\pi)^3\delta(\vec{k}+\vec{k}')\frac{2\pi^2}{k^3}\Delta^2(k)$$
+      并对 $\vec{k}'$ 积分，得到
+    \bea
+     && \langle \frac{\Delta T}{T}(\vec{n}_1)  \frac{\Delta T}{T}(\vec{n}_2)\rangle \newl
+    &=& \frac{1}{64 \pi}\sum_{\ell,\ell'}(-i)^{\ell+\ell'} \times \newl
+    && \int d^3\vec{k}  F_{\gamma\ell}(\tau_0, k)F_{\gamma\ell'}(\tau_0, k)\frac{\Delta^2(k)}{k^3} P_{\ell}(\vec{n_1}\cdot\hat{k}) P_{\ell}(-\vec{n_2}\cdot\hat{k})
+    \eea
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{宇宙微波背景辐射的角关联函数（续)}    
+    回忆下球谐函数的加法公式：
+    $$ P_\ell(\vec{n}\cdot\hat{k}) = \frac{4\pi}{2\ell+1}\sum_{m=-\ell}^\ell Y_{\ell m}^*(\vec{n})Y_{\ell m}(\hat{k}) .$$
+    就有
+    \bea
+     && \langle \frac{\Delta T}{T}(\vec{n}_1)  \frac{\Delta T}{T}(\vec{n}_2)\rangle \newl
+    &=&  \frac{1}{64 \pi}\sum_{\ell,\ell'}\frac{4\pi}{2\ell+1}\frac{4\pi}{2\ell'+1}\sum_{m, m'}(-i)^{\ell+\ell'}Y_{\ell m}^*(\vec{n_1})Y_{\ell' m'}(-\vec{n_2}) \times \newl
+    && \int d^3\vec{k}  F_{\gamma\ell}(\tau_0, k)F_{\gamma\ell'}(\tau_0, k)\frac{\Delta^2(k)}{k^3}Y_{\ell m}(\hat{k}) Y_{\ell' m'}^*(\hat{k}) 
+    \eea
+  \end{frame}
+  
+
+    \begin{frame}
+    \frametitle{宇宙微波背景辐射的角关联函数（续)}    
+      把积分 $d^3\vec{k}$ 写成 $k^2dk d\Omega$，利用球谐函数的正交归一化性质，
+      $$\int d^2\Omega Y_{\ell m}(\hat{k}) Y_{\ell' m'}^*(\hat{k}) = \delta_{\ell\ell'}\delta_{mm'}$$
+      并对 $\ell', m'$ 求和， 就有
+      \bea
+      && \langle \frac{\Delta T}{T}(\vec{n}_1)  \frac{\Delta T}{T}(\vec{n}_2)\rangle \newl
+      &=& \frac{1}{64 \pi}\sum_{\ell,m}\left[\frac{4\pi}{2\ell+1}\right]^2(-1)^\ell Y_{\ell m}^*(\vec{n_1})Y_{\ell m}(-\vec{n_2}) \times \newl
+      && \int_0^\infty  \left[F_{\gamma\ell}(\tau_0, k)\right]^2\Delta^2(k)\frac{dk}{k}
+    \eea
+  \end{frame}
+
+
+    \begin{frame}
+    \frametitle{宇宙微波背景辐射的角关联函数（续)}    
+      利用球谐函数的宇称性质 $(-1)^\ell Y_{\ell m}(-\vec{n}_2) =Y_{\ell m}(\vec{n}_2)$，就有
+      \bea
+      && \langle \frac{\Delta T}{T}(\vec{n}_1)  \frac{\Delta T}{T}(\vec{n}_2)\rangle \newl
+      &=& \frac{1}{64 \pi} \sum_{\ell,m}\left[\frac{4\pi}{2\ell+1}\right]^2 Y_{\ell m}^*(\vec{n_1})Y_{\ell m}(\vec{n_2}) \times \newl
+      && \int_0^\infty  \left[F_{\gamma\ell}(\tau_0, k)\right]^2\Delta^2(k)\frac{dk}{k}
+    \eea
+  \end{frame}
+    
+
+    \begin{frame}
+    \frametitle{宇宙微波背景辐射的角关联函数（续)}    
+      最后，对$\vec{n}_1, \vec{n}_2$ 利用球谐函数加法公式，得到
+      \bea
+      && \langle \frac{\Delta T}{T}(\vec{n}_1)  \frac{\Delta T}{T}(\vec{n}_2)\rangle \newl
+      &=& \frac{1}{16} \sum_{\ell} \frac{1}{2\ell+1} P_\ell(\vec{n}_1\cdot\vec{n}_2) \int_0^\infty  \left[F_{\gamma\ell}(\tau_0, k)\right]^2\Delta^2(k)\frac{dk}{k}
+    \eea
+  \end{frame}
+
+
+    \begin{frame}
+    \frametitle{宇宙微波背景辐射的角关联函数（完结)}    
+      定义CMB功率谱
+      $$C_\ell = \frac{\pi}{4(2\ell+1)^2} \int_0^\infty  \left[F_{\gamma\ell}(\tau_0, k)\right]^2\Delta^2(k)\frac{dk}{k}.$$
+      就有
+      $$ \langle \frac{\Delta T}{T}(\vec{n}_1)  \frac{\Delta T}{T}(\vec{n}_2)\rangle = \sum_{\ell}\frac{2\ell+1}{4\pi}C_\ell P_\ell(\vec{n}_1\cdot\vec{n}_2)$$
+  \end{frame}
+    
+
+
+    \begin{frame}
+    \frametitle{Line of sight Integral}    
+    由于实验可以观测到 $\ell\sim 10^4$ 的CMB功率谱。而我们在解Boltzmann方程时一般会在 $\ell_{\max}$ 约为十几左右做个截断，所以前面推导的公式只在很小的 $\ell$ 具有实际意义。
+
+    \skipline
+
+    实际的计算使用的是 $F_{\gamma\ell}$ 的一个积分表示：
+    $$\frac{F_{\gamma\ell}(\tau_0, k)}{2\ell+1} = \int_0^{\tau_0} d\tau e^{-\kappa} S(k,\tau) j_\ell\left(k(\tau_0-\tau)\right)$$
+    这里的 $\kappa$ 是积分得到的$\tau$ 和 $\tau_0$ 之间的总光深。源函数 $S(k,\tau)$ 可以用Boltzmann方程给出的 $\ell\le 2$ 的微扰量组合得出（请参考神作 astro-ph/9603033)。
+    由于球贝塞尔函数 $j_\ell$ 都可以事先算好或直接用近似算法快速计算，所以这种计算方法可以实现秒算CMB功率谱。
+  \end{frame}
+    
+
+
+    \begin{frame}
+      \frametitle{回到CAMB和CLASS}
+      最后，当你理解了所有计算量的来龙去脉之后，我希望你能回到CAMB或者CLASS而不是依赖于我写的示范代码 —— 毕竟，python太慢，而且中微子是有质量的。
+
+      \skipline
+
+      安装CAMB很简单：
+
+      pip3 install camb
+
+      然后你搜索下camb的示范代码，很快就能学会如何计算各种微扰量、物质功率谱和CMB功率谱。
+    \end{frame}
+    
+    
+    \ech
+\end{document}
+
+
+
+
+  

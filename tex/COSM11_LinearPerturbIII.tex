@@ -143,7 +143,7 @@
     \skipline
     
     为了简化符号我们约定：
-    $$k_H\equiv \frac{k}{aH}, \kappa_N \equiv \frac{n_e\sigma_Tc}{H}$$
+    $$k_H\equiv \frac{k}{aH}, \kappa_N \equiv \frac{n_e\sigma_Tc}{H}, \epsilon\equiv -\frac{\dot H}{H^2}$$
     它们都是随时间演化的背景变量。我们需要先运行 RECFAST 来计算 $\kappa_N$。
   \end{frame}
 
@@ -231,7 +231,7 @@
       $$\langle \zeta(\vec{k}_1) \zeta(\vec{k}_2)\rangle = (2\pi)^3\delta(\vec{k}_1+\vec{k}_2)P_\zeta(k_1)$$
       无量纲的功率谱一般参数化为：
       $$\Delta^2(k)\equiv \frac{k^3}{2\pi^2}P_\zeta(k) = A_s\left(\frac{k}{k_{\rm pivot}}\right)^{n_s-1}$$
-      在CAMB和我们这里的实际的线性微扰计算中，我们总是取 $\zeta(\vec{k})$ 为 $1$。算出的微扰量称为 transfer function (用$T_F$表示)。要计算该微扰量的功率谱时，我们要把原初功率谱乘以 $|T_F|^2$.
+     标准的 $k_{\rm pivot}$ 一般取 $0.05\mathrm{Mpc}^{-1}$。 在CAMB和我们这里的实际的线性微扰计算中，我们总是取 $\zeta(\vec{k})$ 为 $1$。算出的微扰量称为 transfer function (用$T_F$表示)。要计算该微扰量的功率谱时，我们要把原初功率谱乘以 $|T_F|^2$.
     \end{frame}
 
     \begin{frame}
