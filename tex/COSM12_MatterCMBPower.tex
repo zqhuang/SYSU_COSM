@@ -6,25 +6,24 @@
   \bch
   \tpage{12}{Matter Power Spectrum and CMB Power Spectrum}
 
-  \section{Matter Power Spectrum}
   \secpage{下面我们介绍如何用前面介绍的微扰计算结果来计算宇宙学观测量}{\addfig{1}{qidai.jpg}}
 
   
-  \section{Matter Power Spectrum}
+  \section{Linear Matter Power Spectrum}
 
-  \secpage{物质扰动功率谱}{$$P_m(k; z) = \frac{8\pi^2a^2k}{9H_0^2\Omega_m^2} \lvert\Phi(k;z)\rvert^2 \Delta^2(k).$$}
+  \secpage{冷物质线性扰动功率谱}{$$P_m(k; z) = \frac{8\pi^2a^2k}{9H_0^2\Omega_m^2} \lvert\Phi(k;z)\rvert^2 \Delta^2(k).$$}
   
   \begin{frame}
-    \frametitle{冷物质密度扰动}
+    \frametitle{冷物质的密度扰动}
     利用泊松方程，可以从牛顿引力势算出“冷物质密度扰动” $\delta_m$：
     $$ 4\pi G\bar{\rho}_m \delta_m = -\frac{k^2}{a^2}\Phi $$
     注意密度扰动是依赖于规范的量，这里的 $\delta_m$ 和牛顿规范下的 $\delta_c, \delta_b$ 并不完全一致。它们仅在晚期宇宙、远小于视界尺度（$k\gg aH$） 时一致。在忽略辐射和中微子的情况下，$\delta_m$ 和物质共动同步规范下的冷物质密度扰动一致。
   \end{frame}
 
   \begin{frame}
-    \frametitle{冷物质密度扰动功率谱}
+    \frametitle{冷物质密度线性扰动功率谱}
     利用 $\bar{\rho}_m = \frac{3H_0^2}{8\pi G}\Omega_m a^{-3}$，可以写出冷物质密度扰动的功率谱为
-    $$P_m(k; z) = |\delta_m(k)|^2 = \frac{4a^2k^4}{9H_0^2\Omega_m^2} \lvert\Phi(k;z)\rvert^2 P_\zeta(k)$$
+    $$P_m(k; z) = \frac{4a^2k^4}{9H_0^2\Omega_m^2} \lvert\Phi(k;z)\rvert^2 P_\zeta(k)$$
     我们代码算出来的 $\Phi(k; z)$ 实际上是隐去了原初扰动初始随机变量 $\zeta(\vec{k})$ 的因子，所以上面补回了 $\zeta$ 的功率谱。
 
     用 $\zeta$ 的无量纲功率谱  $\Delta^2(k)=\frac{k^3}{2\pi^2}P_\zeta(k)$ 表示就是
@@ -39,8 +38,30 @@
     \skipline
     
     因为可能需要输出很大的 $k$ 的 $P_m(k)$，代码里对大的 $k$ 有特殊的处理方式：主要是把晚期宇宙的辐射和中微子的多极展开中的 $\ell>2$ 项进行人为压缩。物理上，由于晚期宇宙辐射和中微子占比低，且在小尺度($k\gg aH$)上很均匀，所以这个近似应该OK（数值上，你也可以通过改变压缩量来检测事实是否如此）。
+
+    \skipline
+    
+    另外，要注意这里计算的是线性扰动功率谱。实际上的物质功率谱在 $k\gtrsim 0.1\mathrm{Mpc}^{-1}$ 逐渐会有非线性的修正。非线性的物质扰动功率谱一般是用大尺度结构数值模拟和一些半解析方法进行拟合得到。
   \end{frame}
 
+  \begin{frame}
+    \frametitle{$\sigma_8$ 参数}
+    宇宙学的 $\sigma_8$ 参数定义为红移零处，半径为 $R = 8h^{-1}\mathrm{Mpc}$ 的球内的物质的密度扰动平均值的宇宙学标准差。也就是说，假想实现很多宇宙，在每个宇宙内取个这样的球，算出球内平均 $\overline{\delta_m}$，然后计算所有宇宙的 $ \overline{\delta_m}$ 标准差（即方差的平方根)。
+
+      具体来说，
+      $$\sigma_8^2 = \frac{9}{2\pi^2}\int_0^\infty k^2P_m(k)\left(\frac{\sin(kR)-kR\cos{kR}}{(kR)^3}\right)^2 dk$$
+
+      你能用卷积定理和傅立叶变换保内积的定理给出上面公式的证明吗？
+
+
+      \skipline
+
+      \notes{宇宙学实测的$\sigma_8$ 大致在 $0.8$ 左右，各个观测的结果之间小有差异，但都稳定分布在 $0.7$ 和 $0.9$ 之间。}
+      
+  \end{frame}
+
+  
+  
   \section{CMB power spectrum}
   
   \secpage{CMB power spectrum}{加法公式又来了……}
